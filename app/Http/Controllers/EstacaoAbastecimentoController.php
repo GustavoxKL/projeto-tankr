@@ -24,13 +24,22 @@ class EstacaoAbastecimentoController extends Controller
     // CRIAR
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'EnderecoEst' => 'required|string|max:100',
-            'Token' => 'required|integer', 
-            'FK_EMPRESA_ID_EMPRESA' => 'required|integer'
-        ]);
+        try {
 
-        return EstacaoAbastecimento::create($data);
+            $data = $request->validate([
+                'EnderecoEst' => 'required|string|max:100',
+                'Token' => 'required|integer', 
+                'FK_EMPRESA_ID_EMPRESA' => 'required|integer'
+            ]);
+
+            EstacaoAbastecimento::create($data);
+
+            return response()->json(['message' => 'Estacao cadastrada com sucesso']);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Erro ao cadastrar Estacao', 'error' => $th->getMessage()], 400);
+        }
+        
     }
  
     // ATUALIZAR

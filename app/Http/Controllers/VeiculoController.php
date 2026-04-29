@@ -23,17 +23,24 @@ class VeiculoController extends Controller
 
     // CRIAR
     public function store(Request $request)
-    {
-        $data = $request->validate([
-            'PlacaVei' => 'required|string|max:7',
-            'ModeloVei' => 'required|string|max:50',
-            'AnoVei' => 'required|integer',
-            'FK_EMPRESA_ID_EMPRESA' => 'required|integer'
-        ]);
+    {   
+        try {
+            $data = $request->validate([
+                'PlacaVei' => 'required|string|max:7',
+                'ModeloVei' => 'required|string|max:50',
+                'AnoVei' => 'required|integer',
+                'FK_EMPRESA_ID_EMPRESA' => 'required|integer'
+            ]);
 
-        $data['DataCadastroVei'] = now();
+            $data['DataCadastroVei'] = now();
 
-        return Veiculo::create($data);
+            Veiculo::create($data);
+
+            return response()->json(['message' => 'Veiculo cadastrado com sucesso']);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Erro ao cadastrar Veiculo', 'error' => $th->getMessage()], 400);
+        }
     }
 
     // ATUALIZAR

@@ -24,17 +24,24 @@ class EmpresaController extends Controller
     // CRIAR
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'NomeEmpresa' => 'required|string|max:100',
-            'CNPJ' => 'required|string|max:18',
-            'TelefoneEmpresa' => 'nullable|string|max:15',
-            'EnderecoEmpresa' => 'nullable|string|max:200',
-            'StatusEmpresa' => 'nullable|boolean'
-        ]);
+        try {
+            $data = $request->validate([
+                'NomeEmpresa' => 'required|string|max:100',
+                'CNPJ' => 'required|string|max:18',
+                'StatusEmpresa' => 'required|boolean',
+                'TelefoneEmpresa' => 'nullable|string|max:15',
+                'EnderecoEmpresa' => 'nullable|string|max:200'
+            ]);
 
-        $data['DataCadastroEmpresa'] = now();
+            $data['DataCadastroEmpresa'] = now();
 
-        return Empresa::create($data);
+            Empresa::create($data);
+
+            return response()->json(['message' => 'Empresa cadastrado com sucesso']);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Erro ao cadastrar Empresa', 'error' => $th->getMessage()], 400);
+        }
     }
 
     // ATUALIZAR

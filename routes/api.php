@@ -19,8 +19,8 @@ Route::get('/test', function () {
 
 Route::apiResource('empresas', EmpresaController::class);
 Route::apiResource('estacoes', EstacaoAbastecimentoController::class);
-Route::apiResource('usuarios', UsuarioController::class);
 Route::apiResource('motoristas', MotoristaController::class);
+Route::apiResource('usuarios', UsuarioController::class);
 Route::apiResource('veiculos', VeiculoController::class);
 
 // ==================== ROTAS PÚBLICAS ====================

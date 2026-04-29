@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Motorista;
+use Exception;
 //use App\Http\Controllers\Controller;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -25,19 +26,26 @@ class MotoristaController extends Controller
     // CRIAR
     public function store(Request $request)
     {
-        $data =$request->validate([
-            'NomeMot' => 'required|string|max:100',
-            'CPF' => 'required|string|max:14',
-            'EmailMot' => 'required|email|unique:motorista,EmailMot',
-            'SenhaMot' => 'required|min:6',
-            'FK_EMPRESA_ID_EMPRESA' => 'required|integer'
-        ]);
+        try {
+            $data =$request->validate([
+                'NomeMot' => 'required|string|max:100',
+                'CPF' => 'required|string|max:14',
+                'TelefoneMot' => 'nullable|string|max:15',
+                'EmailMot' => 'required|email|unique:motorista,EmailMot',
+                'SenhaMot' => 'required|min:6',
+                'FK_EMPRESA_ID_EMPRESA' => 'required|integer'
+            ]);
 
-        
-        $data['SenhaMot'] = Hash::make($data['SenhaMot']);
-        $data['DataCadastroMot'] = now();
+            $data['SenhaMot'] = Hash::make($data['SenhaMot']);
+            $data['DataCadastroMot'] = now();
 
-        return Motorista::create($data);
+            Motorista::create($data);
+
+            return response()->json(['message' => 'Motorista cadastrado com sucesso']);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Erro ao cadastrar motorista', 'error' => $th->getMessage()], 400);
+        }
     }
 
     // ATUALIZAR

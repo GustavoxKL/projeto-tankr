@@ -25,19 +25,29 @@ class UsuarioController extends Controller
     // CRIAR 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'NomeUser' => 'required|string|max:100',
-            'EmailUser' => 'required|email|unique:usuario,EmailUser',
-            'SenhaUser' => 'required|min:6',
-            'FK_EMPRESA_ID_EMPRESA' => 'required|integer'
-        ]);
+        try {
+            $data = $request->validate([
+                'NomeUser' => 'required|string|max:100',
+                'EnderecoUser' => 'nullable|string|max:200',
+                'TelefoneUser' => 'nullable|string|max:15',
+                'StatusUser' => 'required|boolean',
+                'EmailUser' => 'required|email|unique:usuario,EmailUser',
+                'SenhaUser' => 'required|min:6',
+                'TipoUser' => 'nullable|string|max:50',
+                'FK_EMPRESA_ID_EMPRESA' => 'required|integer'
+            ]);
+            
+            $data['SenhaUser'] = Hash::make($data['SenhaUser']);
+            $data['DataCadastroUser'] = now();
 
-        $data['SenhaUser'] = Hash::make($data['SenhaUser']);
-        $data['DataCadastroUser'] = now();
+            Usuario::create($data);
 
-        return Usuario::creat($data);
+            return response()->json(['message' => 'Usuário cadastrado com sucesso']);
+            
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Erro ao cadastrar usuário', 'error' => $th->getMessage()], 400);
+        }
     }
-
 
     // ATUALIZAR
     public function update(Request $request, Usuario $usuario)
