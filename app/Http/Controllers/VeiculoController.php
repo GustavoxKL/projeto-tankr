@@ -46,15 +46,31 @@ class VeiculoController extends Controller
     // ATUALIZAR
     public function update(Request $request, Veiculo $veiculo)
     {
-        $veiculo->update($request->all());
-        return $veiculo;
+        //$veiculo->update($request->all());
+        //return $veiculo;
+
+        $data = collect($request->validate([
+            'PlacaVei' => 'nullable|string|max:7',
+            'ModeloVei' => 'nullable|string|max:50',
+            'AnoVei' => 'nullable|integer',
+            'FK_EMPRESA_ID_EMPRESA' => 'nullable|integer'
+        ]))
+        ->filter(fn($value) => !is_null($value) && $value !== '')
+        ->toArray();
+
+        $veiculo->update($data);
+
+        return response()->json([
+            'message' => 'Veiculo atualizado com sucesso',
+            'data' => $veiculo
+        ]);
     }
 
     // DELETAR
     public function destroy(Veiculo $veiculo)
     {
         $veiculo->delete();
-        return response()->noContent();
+        return response()->json(['message' => 'Veiculo excluido!']);
     }
 
 }

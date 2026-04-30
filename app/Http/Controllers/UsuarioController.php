@@ -52,23 +52,37 @@ class UsuarioController extends Controller
     // ATUALIZAR
     public function update(Request $request, Usuario $usuario)
     {
-        $data = $request->all();
+        $data = collect($request->validate([
+            'NomeUser' => 'nullable|string|max:100',
+            'EnderecoUser' => 'nullable|string|max:200',
+            'TelefoneUser' => 'nullable|string|max:15',
+            'StatusUser' => 'nullable|boolean',
+            'EmailUser' => 'nullable|email|unique:usuario,EmailUser,' . $usuario->ID_USUARIO . ',ID_USUARIO',
+            'SenhaUser' => 'nullable|min:6',
+            'TipoUser' => 'nullable|string|max:50',
+            'FK_EMPRESA_ID_EMPRESA' => 'nullable|integer'
+        ]))
+        ->filter(fn($value) => !is_null($value) && $value !== '')
+        ->toArray();
 
-        // criptografa senha
-        if(isset($data['SenhaUser'])) {
+        // criptografa senha SOMENTE se vier preenchida
+        if (isset($data['SenhaUser'])) {
             $data['SenhaUser'] = Hash::make($data['SenhaUser']);
         }
 
         $usuario->update($data);
-        return $usuario;
-    }
 
+        return response()->json([
+            'message' => 'Usuário atualizado com sucesso',
+            'data' => $usuario
+        ]);
+    }
 
     // DELETAR
     public function destroy(Usuario $usuario)
     {
         $usuario->delete();
-        return response()->noContent();
+        return response()->json(['message' => 'Usuário excluido!']);
     }
  
 }

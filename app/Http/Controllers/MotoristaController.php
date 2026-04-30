@@ -51,21 +51,35 @@ class MotoristaController extends Controller
     // ATUALIZAR
     public function update(Request $request, Motorista $motorista)
     {
-        $data = $request->all();
+        $data = collect($request->validate([
+            'NomeMot' => 'nullable|string|max:100',
+            'CPF' => 'nullable|string|max:14',
+            'TelefoneMot' => 'nullable|string|max:15',
+            'EmailMot' => 'nullable|email|unique:motorista,EmailMot' . $motorista->ID_MOTORISTA . ',ID_MOTORISTA',
+            'SenhaMot' => 'nullable|min:6',
+            'FK_EMPRESA_ID_EMPRESA' => 'nullable|integer'
+        ]))
+        ->filter(fn($value) => !is_null($value) && $value !== '')
+        ->toArray();
 
-        // criptografa senha
-        if(isset($data['SenhaMot'])) {
+        // criptografa senha SOMENTE se vier preenchida
+        if (isset($data['SenhaMot'])) {
             $data['SenhaMot'] = Hash::make($data['SenhaMot']);
         }
 
         $motorista->update($data);
-        return $motorista;
+
+        return response()->json([
+            'message' => 'Motorista atualizado com sucesso',
+            'data' => $motorista
+        ]);
     }
 
     // DELETAR
     public function destroy(Motorista $motorista)
     {
         $motorista->delete();
-        return response()->noContent();
+        return response()->json(['message' => 'Motorista excluido!']);
     }
+    
 }

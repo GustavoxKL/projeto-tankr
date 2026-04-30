@@ -25,7 +25,6 @@ class EstacaoAbastecimentoController extends Controller
     public function store(Request $request)
     {
         try {
-
             $data = $request->validate([
                 'EnderecoEst' => 'required|string|max:100',
                 'Token' => 'required|integer', 
@@ -34,10 +33,10 @@ class EstacaoAbastecimentoController extends Controller
 
             EstacaoAbastecimento::create($data);
 
-            return response()->json(['message' => 'Estacao cadastrada com sucesso']);
+            return response()->json(['message' => 'Estação cadastrada com sucesso']);
 
         } catch (\Throwable $th) {
-            return response()->json(['message' => 'Erro ao cadastrar Estacao', 'error' => $th->getMessage()], 400);
+            return response()->json(['message' => 'Erro ao cadastrar estação', 'error' => $th->getMessage()], 400);
         }
         
     }
@@ -45,14 +44,29 @@ class EstacaoAbastecimentoController extends Controller
     // ATUALIZAR
     public function update(Request $request, EstacaoAbastecimento $estacao)
     {
-        $estacao->update($request->all());
-        return $estacao;
+        //$estacao->update($request->all());
+        //return $estacao;
+
+        $data = collect($request->validate([
+            'EnderecoEst' => 'nullable|string|max:100',
+            'Token' => 'nullable|integer',
+            'FK_EMPRESA_ID_EMPRESA' => 'nullable|integer'
+        ]))
+        ->filter(fn($value) => !is_null($value) && $value !== '')
+        ->toArray();
+
+        $estacao->update($data);
+
+        return response()->json([
+            'message' => 'Estação atualizado com sucesso',
+            'data' => $estacao
+        ]);
     }
 
     // DELETAR
     public function destroy(EstacaoAbastecimento $estacao)
     {
         $estacao->delete();
-        return response()->noContent();
+        return response()->json(['message' => 'Estação excluida!']);
     }
 }

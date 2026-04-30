@@ -9,7 +9,7 @@ class EstacaoAbastecimento extends Model
 {
     use HasFactory;
     
-    protected $table = 'estacaoabastecimento';    
+    protected $table = 'estacaoabastecimento';
 
     protected $primaryKey = 'ID_ESTACAO';
 

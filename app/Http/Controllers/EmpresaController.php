@@ -47,14 +47,33 @@ class EmpresaController extends Controller
     // ATUALIZAR
     public function update(Request $request, Empresa $empresa)
     {
-        $empresa->update($request->all());
-        return $empresa;
+        //$empresa->update($request->all());
+        //return $empresa;
+
+        $data = collect($request->validate([
+            'NomeEmpresa' => 'nullable|string|max:100',
+            'CNPJ' => 'nullable|string|max:18',
+            'StatusEmpresa' => 'nullable|boolean',
+            'TelefoneEmpresa' => 'nullable|string|max:15',
+            'EnderecoEmpresa' => 'nullable|string|max:200'
+        ]))
+        ->filter(fn($value) => !is_null($value) && $value !== '')
+        ->toArray();
+
+        $empresa->update($data);
+
+        return response()->json([
+            'message' => 'Empresa atualizada com sucesso',
+            'data' => $empresa
+        ]);
     }
 
     // DELETAR
     public function destroy(Empresa $empresa)
     {
         $empresa->delete();
-        return response()->noContent();
+        return response()->json(['message' => 'Empresa excluida!']);
+
+        //implementar uma função que verifica se a empresa nn tem nd vinculado para permitir a exclusão
     }
 }
