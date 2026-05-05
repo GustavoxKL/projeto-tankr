@@ -26,7 +26,7 @@ class VeiculoController extends Controller
     {   
         try {
             $data = $request->validate([
-                'PlacaVei' => 'required|string|max:7',
+                'PlacaVei' => 'required|string|max:7|unique:veiculo,PlacaVei',
                 'ModeloVei' => 'required|string|max:50',
                 'AnoVei' => 'required|integer',
                 'FK_EMPRESA_ID_EMPRESA' => 'required|integer'
@@ -46,11 +46,9 @@ class VeiculoController extends Controller
     // ATUALIZAR
     public function update(Request $request, Veiculo $veiculo)
     {
-        //$veiculo->update($request->all());
-        //return $veiculo;
 
         $data = collect($request->validate([
-            'PlacaVei' => 'nullable|string|max:7',
+            'PlacaVei' => 'nullable|string|max:7|unique:veiculo,PlacaVei',
             'ModeloVei' => 'nullable|string|max:50',
             'AnoVei' => 'nullable|integer',
             'FK_EMPRESA_ID_EMPRESA' => 'nullable|integer'

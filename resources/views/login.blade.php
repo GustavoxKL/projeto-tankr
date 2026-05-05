@@ -10,7 +10,7 @@
 <form id="loginForm">
     <input type="email" id="email" placeholder="Email" required><br><br>
     <input type="password" id="password" placeholder="Senha" required><br><br>
-    <button type="submit">Login</button>
+    <button type="submit">Entrar</button>
 </form>
 
 <script>

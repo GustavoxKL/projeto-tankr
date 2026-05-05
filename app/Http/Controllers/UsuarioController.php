@@ -31,7 +31,7 @@ class UsuarioController extends Controller
                 'EnderecoUser' => 'nullable|string|max:200',
                 'TelefoneUser' => 'nullable|string|max:15',
                 'StatusUser' => 'required|boolean',
-                'email' => 'required|email|unique:usuario,EmailUser',
+                'email' => 'required|email|unique:usuario,email',
                 'password' => 'required|min:6',
                 'TipoUser' => 'nullable|string|max:50',
                 'FK_EMPRESA_ID_EMPRESA' => 'required|integer'
@@ -57,8 +57,8 @@ class UsuarioController extends Controller
             'EnderecoUser' => 'nullable|string|max:200',
             'TelefoneUser' => 'nullable|string|max:15',
             'StatusUser' => 'nullable|boolean',
-            'EmailUser' => 'nullable|email|unique:usuario,EmailUser,' . $usuario->ID_USUARIO . ',ID_USUARIO',
-            'SenhaUser' => 'nullable|min:6',
+            'email' => 'nullable|email|unique:usuario,email,' . $usuario->ID_USUARIO . ',ID_USUARIO',
+            'password' => 'nullable|min:6',
             'TipoUser' => 'nullable|string|max:50',
             'FK_EMPRESA_ID_EMPRESA' => 'nullable|integer'
         ]))
@@ -66,8 +66,8 @@ class UsuarioController extends Controller
         ->toArray();
 
         // criptografa senha SOMENTE se vier preenchida
-        if (isset($data['SenhaUser'])) {
-            $data['SenhaUser'] = Hash::make($data['SenhaUser']);
+        if (isset($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
         }
 
         $usuario->update($data);
