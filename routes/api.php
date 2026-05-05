@@ -24,14 +24,30 @@ Route::apiResource('usuarios', UsuarioController::class);
 Route::apiResource('veiculos', VeiculoController::class);
 
 // ==================== ROTAS PÚBLICAS ====================
+Route::post('/login', [AuthController::class, 'login']);
 
-// Autenticação
-Route::post('/auth/login', [AuthController::class, 'login']);
-Route::post('/auth/register', [AuthController::class, 'register']);
-
-// ==================== ROTAS PROTEGIDAS ====================
-
+// rotas protegidas
 Route::middleware('auth:sanctum')->group(function () {
+
+    // pegar usuário logado
+    Route::get('/me', function (Request $request) {
+        return response()->json([
+            'user' => $request->user()
+        ]);
+    });
+
+    // logout
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
+
+
+
+
+
+
+
+
+//Route::middleware('auth:sanctum')->group(function () {
     
     // Auth
     //Route::post('/auth/logout', [AuthController::class, 'logout']);
@@ -49,6 +65,5 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // Veículos
     //Route::apiResource('veiculos', VeiculoController::class);
-    //Route::get('/veiculos/buscar/{codigo}', [VeiculoController::class, 'buscarPorCodigo']);
-});
+//});
 

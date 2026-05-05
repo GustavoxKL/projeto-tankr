@@ -1,22 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
 
+<h2>Login</h2>
 
-<a href="/">Voltar para Home</a>
+<form id="loginForm">
+    <input type="email" id="email" placeholder="Email" required><br><br>
+    <input type="password" id="password" placeholder="Senha" required><br><br>
+    <button type="submit">Login</button>
+</form>
 
+<script>
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-<div class="contLogin">
-    <h1>Acesse sua conta</h1>
-    
-    <p>Email</p>
-    <input type="text" name="" id="" placeholder="seu@email.com">
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-    <p>Senha</p>
-    <input type="text" name="" id="" placeholder="********">
-    
-    <br><br>
-    <input type="checkbox" name="" id=""> Lembrar-me
-    <p><a href="#">Esqueceu a senha?</a></p>
+    try {
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
 
-    <button class="botao">Entrar</button>
-</div>
+        const data = await response.json();
 
-<p>Não tem uma conta? <a href="#">Entre em contato</a></p>
+        if (response.ok) {
+            // salva token
+            localStorage.setItem('token', data.token);
+
+            alert('Login realizado com sucesso!');
+
+            // redireciona (cria depois)
+            window.location.href = '/dashboard';
+        } else {
+            alert(data.message);
+        }
+
+    } catch (error) {
+        alert('Erro ao conectar com o servidor');
+        console.error(error);
+    }
+});
+</script>
+
+</body>
+</html>

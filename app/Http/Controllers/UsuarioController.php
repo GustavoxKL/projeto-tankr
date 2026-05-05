@@ -31,13 +31,13 @@ class UsuarioController extends Controller
                 'EnderecoUser' => 'nullable|string|max:200',
                 'TelefoneUser' => 'nullable|string|max:15',
                 'StatusUser' => 'required|boolean',
-                'EmailUser' => 'required|email|unique:usuario,EmailUser',
-                'SenhaUser' => 'required|min:6',
+                'email' => 'required|email|unique:usuario,EmailUser',
+                'password' => 'required|min:6',
                 'TipoUser' => 'nullable|string|max:50',
                 'FK_EMPRESA_ID_EMPRESA' => 'required|integer'
             ]);
             
-            $data['SenhaUser'] = Hash::make($data['SenhaUser']);
+            $data['password'] = Hash::make($data['password']);
             $data['DataCadastroUser'] = now();
 
             Usuario::create($data);

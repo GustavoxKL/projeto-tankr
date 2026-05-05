@@ -1,4 +1,4 @@
-<div class="dash-principal">
+<!--<div class="dash-principal">
     <div class="cabecalho">
         <h2>Dashboard</h2>
     </div>
@@ -100,3 +100,71 @@
         <div class="card-vei"></div>
     </div>
 </div>
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+
+<h1>Dashboard</h1>
+
+<h2 id="userName"></h2>
+
+<button onclick="logout()">Logout</button>
+
+<script>
+// 🔒 Verifica se existe token
+const token = localStorage.getItem('token');
+
+if (!token) {
+    window.location.href = '/login';
+}
+
+// 🔍 Valida token no backend
+fetch('/api/me', {
+    headers: {
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/json'
+    }
+})
+.then(response => {
+    if (!response.ok) {
+        // Token inválido ou expirado
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+        return;
+    }
+    return response.json();
+})
+.then(data => {
+    if (data) {
+        // 👤 Mostra nome do usuário
+        document.getElementById('userName').innerText =
+            'Olá, ' + data.user.NomeUser;
+    }
+})
+.catch(error => {
+    console.error(error);
+    alert('Erro ao validar sessão');
+});
+
+// 🚪 Logout
+function logout() {
+    fetch('/api/logout', {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/json'
+        }
+    });
+
+    localStorage.removeItem('token');
+    window.location.href = '/login';
+}
+</script>
+
+</body>
+</html>
