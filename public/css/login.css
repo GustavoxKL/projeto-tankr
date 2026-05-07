@@ -109,13 +109,11 @@ body {
     border-radius: 12px;
     font-size: 15px;
     transition: all 0.3s ease;
-    background: #FAFAFA;
 }
 
 .form-group input:focus {
     outline: none;
     border-color: var(--primary-yellow);
-    background: var(--white);
 }
 
 .form-group input::placeholder {
