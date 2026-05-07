@@ -4,16 +4,12 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 
 Route::get('/criar-conta', [UsuarioController::class, 'create'])->name('create-account');
 Route::post('/criar-conta', [UsuarioController::class, 'store'])->name('insert-account');
 
 
-Route::get('/login', [AuthController::class, 'index'])->name('login');
+Route::get('/', [AuthController::class, 'index'])->name('login');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
