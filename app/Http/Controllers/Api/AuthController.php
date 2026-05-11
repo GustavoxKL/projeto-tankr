@@ -8,9 +8,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Usuario;
+use App\Traits\HttpResponses;
 
 class AuthController extends Controller
 {   
+    use HttpResponses; 
 
     public function index()
     {
@@ -20,20 +22,17 @@ class AuthController extends Controller
     // Login de usuário - POST
     public function login(Request $request)
     {   
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json([
-                'message' => 'Credenciais inválidas'
-            ], 401);
+        if (Auth::attempt($request->only('email', 'password'))) {
+            return $this->success([
+                'token' => $request->user()->createToken('auth_token')->plainTextToken
+            ], 'Authorized', 200);
         }
 
-        $user = Auth::user();
+        return $this->error(null, 'Not Authorized', 403);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'user' => $user,
-            'token' => $token
-        ]);
+        //$user = Auth::user();
+        
+        //return view('dashboard');
     }
 
     // Logout de usuário - POST
@@ -41,9 +40,7 @@ class AuthController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json([
-            'message' => 'Logout realizado'
-        ]);
+        return $this->success(null, 'Token Revoked', 200);
     }
    
 }

@@ -9,25 +9,25 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\MotoristaController;
 use App\Http\Controllers\VeiculoController;
 
-// Rota de teste
-Route::get('/test', function () {
-    return response()->json([
-        'success' => true,
-        'message' => 'API funcionando!'
-    ]);
-});
-
 Route::apiResource('empresas', EmpresaController::class);
 Route::apiResource('estacoes', EstacaoAbastecimentoController::class)->parameters(['estacoes' => 'estacao']);
 Route::apiResource('motoristas', MotoristaController::class);
 Route::apiResource('usuarios', UsuarioController::class);
 Route::apiResource('veiculos', VeiculoController::class);
 
+
 // ==================== ROTAS PÚBLICAS ====================
 Route::post('/login', [AuthController::class, 'login']);
 
-// rotas protegidas
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/sla', function () {
+        return response()->json([
+            'success' => true,
+            'message' => 'API funcionando!'
+        ]);
+    });
+
+    Route::post('/logout', [AuthController::class, 'logout']);
 
     // pegar usuário logado
     Route::get('/me', function (Request $request) {
@@ -36,8 +36,6 @@ Route::middleware('auth:sanctum')->group(function () {
         ]);
     });
 
-    // logout
-    Route::post('/logout', [AuthController::class, 'logout']);
 });
 
 

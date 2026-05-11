@@ -28,8 +28,6 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             // salva token
             localStorage.setItem('token', data.token);
 
-            // redireciona (cria depois)
-            window.location.href = '/dashboard';
         } else {
             alert(data.message);
         }
