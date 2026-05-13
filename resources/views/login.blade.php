@@ -14,9 +14,16 @@
             <p>Gestão de Frotas Multi-Tenant</p>
         </div>
 
-        <div id="errorMessage" class="error-message"></div>
+        <!-- <div id="errorMessage" class="error-message"></div> -->
 
-        <form id="loginForm">
+        @if ($errors->any())
+            <div class="error-message show">
+                {{ $errors->first() }}
+            </div>
+        @endif
+
+        <form id="loginForm" method="POST" action="{{ route('login.web') }}">
+            @csrf
             <div class="form-group">
                 <label for="email">Email</label>
                 <div class="input-wrapper">
@@ -30,6 +37,7 @@
                         required
                         autocomplete="email"
                         placeholder="seu@email.com"
+                        value="{{ old('email') }}"
                     >
                 </div>
             </div>
@@ -51,9 +59,7 @@
                 </div>
             </div>
     
-            <button type="submit" class="btn-login" id="btnLogin">
-                Entrar
-            </button>
+            <button type="submit" class="btn-login" id="btnLogin">Entrar</button>
         </form>
 
         <div class="footer">
@@ -61,7 +67,7 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/login.js') }}"></script>
+    <!-- <script src="{{ asset('js/login.js') }}"></script> -->
 
 </body>
 </html>

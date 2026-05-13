@@ -7,8 +7,8 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Usuario;
 use App\Traits\HttpResponses;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
 {   
@@ -19,7 +19,7 @@ class AuthController extends Controller
         return view('login');
     }
 
-    // Login de usuário - POST
+    // Login API - POST
     public function login(Request $request)
     {   
         if (Auth::attempt($request->only('email', 'password'))) {
@@ -29,13 +29,9 @@ class AuthController extends Controller
         }
 
         return $this->error(null, 'Not Authorized', 403);
-
-        //$user = Auth::user();
-        
-        //return view('dashboard');
     }
 
-    // Logout de usuário - POST
+    // Logout API - POST
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
@@ -43,4 +39,50 @@ class AuthController extends Controller
         return $this->success(null, 'Token Revoked', 200);
     }
    
+    // Login na Web
+    public function loginWeb(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (!Auth::attempt($credentials)) {
+            return back()->withErrors([
+                'email' => 'Email ou senha inválidos.',
+            ])->onlyInput('email');
+        }
+
+        $request->session()->regenerate();
+
+        $token = $request->user()->createToken('auth_token')->plainTextToken;
+
+        session([
+            'api_token' => $token
+        ]);
+
+        return redirect()->route('dashboard');
+    }
+
+    // Logout na Web
+    public function logoutWeb(Request $request)
+    {
+        $token = session('api_token');
+
+        if ($token) {
+
+            $accessToken = PersonalAccessToken::findToken($token);
+
+            if ($accessToken) {
+                $accessToken->delete();
+            }
+        }
+
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
+    }
 }

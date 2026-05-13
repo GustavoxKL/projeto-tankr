@@ -1,10 +1,9 @@
-document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const btnLogin = document.getElementById('btnLogin');
-    const errorMessage = document.getElementById('errorMessage');
     
     // Limpa erros anteriores
     errorMessage.classList.remove('show');

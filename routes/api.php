@@ -20,36 +20,27 @@ Route::apiResource('veiculos', VeiculoController::class);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
+
     Route::get('/sla', function () {
         return response()->json([
             'success' => true,
             'message' => 'API funcionando!'
         ]);
     });
-
-    Route::post('/logout', [AuthController::class, 'logout']);
-
-    // pegar usuário logado
+    
     Route::get('/me', function (Request $request) {
         return response()->json([
             'user' => $request->user()
         ]);
     });
 
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
-
-
-
-
-
-
 
 
 //Route::middleware('auth:sanctum')->group(function () {
     
     // Auth
-    //Route::post('/auth/logout', [AuthController::class, 'logout']);
-    //Route::get('/auth/me', [AuthController::class, 'me']);
     //Route::post('/auth/change-password', [AuthController::class, 'changePassword']);
     
     // Empresas

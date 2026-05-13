@@ -16,7 +16,10 @@
                     <div class="name" id="userName">Usuário</div>
                 </div>
                 <div id="statusBadge" class="status-badge offline">🔴 Desconectado</div>
-                <button onclick="logout()" class="btn-danger">Sair</button>
+                <form method="POST" action="{{ route('logout.web') }}">
+                    @csrf
+                    <button type="submit" class="btn-danger">Sair</button>
+                </form>
             </div>
         </div>
 
@@ -253,33 +256,7 @@
 
 
 
-
-
-
 <script>
-// 🔒 Verifica se existe token
-const token = localStorage.getItem('token');
-
-if (!token) {
-    window.location.href = '/login';
-}
-
-// 🔍 Valida token no backend
-fetch('/api/me', {
-    headers: {
-        'Authorization': 'Bearer ' + token,
-        'Accept': 'application/json'
-    }
-})
-.then(response => {
-    if (!response.ok) {
-        // Token inválido ou expirado
-        localStorage.removeItem('token');
-        window.location.href = '/login';
-        return;
-    }
-    return response.json();
-})
 .then(data => {
     if (data) {
         // 👤 Mostra nome do usuário
@@ -287,24 +264,6 @@ fetch('/api/me', {
             'Olá, ' + data.user.NomeUser;
     }
 })
-.catch(error => {
-    console.error(error);
-    alert('Erro ao validar sessão');
-});
-
-// 🚪 Logout
-function logout() {
-    fetch('/api/logout', {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer ' + token,
-            'Accept': 'application/json'
-        }
-    });
-
-    localStorage.removeItem('token');
-    window.location.href = '/';
-}
 </script>
 
 </body>
