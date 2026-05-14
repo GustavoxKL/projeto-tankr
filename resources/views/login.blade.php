@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tankr - Login</title>
+    <title>@yield('title', 'TANKER')</title>
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 </head>
 <body>
@@ -13,8 +13,6 @@
             <h1>TANKR</h1>
             <p>Gestão de Frotas Multi-Tenant</p>
         </div>
-
-        <!-- <div id="errorMessage" class="error-message"></div> -->
 
         @if ($errors->any())
             <div class="error-message show">

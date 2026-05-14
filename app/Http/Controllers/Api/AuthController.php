@@ -39,6 +39,7 @@ class AuthController extends Controller
         return $this->success(null, 'Token Revoked', 200);
     }
    
+
     // Login na Web
     public function loginWeb(Request $request)
     {
@@ -61,7 +62,25 @@ class AuthController extends Controller
             'api_token' => $token
         ]);
 
-        return redirect()->route('dashboard');
+        $user = Auth::user();
+
+        if ($user->TipoUser === 'admin') {
+            return redirect()->route('dashboard.admin');
+        }
+
+        if ($user->TipoUser === 'superadmin') {
+            return redirect()->route('dashboard.superadmin');
+        }
+
+        // Usuario se não for admin nem super
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login')->withErrors([
+            'email' => 'Tipo de usuário não autorizado.',
+        ]);
     }
 
     // Logout na Web
@@ -70,7 +89,6 @@ class AuthController extends Controller
         $token = session('api_token');
 
         if ($token) {
-
             $accessToken = PersonalAccessToken::findToken($token);
 
             if ($accessToken) {

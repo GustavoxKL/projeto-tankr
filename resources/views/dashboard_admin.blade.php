@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tankr - Dashboard</title>
-    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <title>@yield('title', 'TANKER - Dashboard')</title>
+
+    <link rel="stylesheet" href="{{ asset('css/dashboard_admin.css') }}">
 </head>
 <body>
+    
     <div class="container">
         <div class="header">
             <h1>Sistema de Abastecimento</h1>
@@ -251,20 +253,7 @@
         </div>
     </div>
 
-
-
-
-
-
-<script>
-.then(data => {
-    if (data) {
-        // 👤 Mostra nome do usuário
-        document.getElementById('userName').innerText =
-            'Olá, ' + data.user.NomeUser;
-    }
-})
-</script>
+    <script src="{{ asset('js/dashboard_admin.js') }}"></script>
 
 </body>
 </html>

@@ -17,9 +17,13 @@ Route::post('/login', [AuthController::class, 'loginWeb'])->name('login.web');
 
 Route::middleware(['auth'])->group(function() {
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard-admin', function () {
+        return view('dashboard_admin');
+    })->name('dashboard.admin');
+
+    Route::get('/dashboard-superadmin', function () {
+        return view('dashboard_superadmin');
+    })->name('dashboard.superadmin');
 
     Route::post('/logout', [AuthController::class, 'logoutWeb'])->name('logout.web');
 });
