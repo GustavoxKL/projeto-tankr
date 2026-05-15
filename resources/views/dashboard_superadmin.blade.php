@@ -6,11 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'TANKER - Dashboard')</title>
     
-    <!-- CSS -->
     <link rel="stylesheet" href="{{ asset('css/dashboard_superadmin.css') }}">
     @yield('styles')
 </head>
 <body>
+
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
@@ -24,33 +24,65 @@
 
         <nav class="sidebar-nav">
             <a href="{{ route('dashboard.superadmin') }}" class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="1" width="9" height="9" rx="2"/>
+                    <rect x="16" y="2" width="6" height="6" rx="1.5"/>
+                    <rect x="3" y="15" width="6" height="6" rx="1.5"/>
+                    <rect x="14" y="12" width="9" height="9" rx="2"/>
                 </svg>
                 <span>Dashboard</span>
             </a>
 
+            <a href="#" class="nav-item {{ request()->routeIs('empresas.*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18"/>
+                    <path d="M6 12H4a2 2 0 0 0-2 2v8h20v-8a2 2 0 0 0-2-2h-2"/>
+                    <path d="M10 6h4"/>
+                    <path d="M10 10h4"/>
+                    <path d="M10 14h4"/>
+                    <path d="M10 18h4"/>
+                </svg>
+                <span>Empresas</span>
+            </a>
+
+            <a href="#" class="nav-item {{ request()->routeIs('usuarios.*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                <span>Usuários</span>
+            </a>
+
             <a href="#" class="nav-item {{ request()->routeIs('motoristas.*') ? 'active' : '' }}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                 </svg>
                 <span>Motoristas</span>
             </a>
 
             <a href="#" class="nav-item {{ request()->routeIs('veiculos.*') ? 'active' : '' }}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/>
+                    <path d="M15 18H9"/>
+                    <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14"/>
+                    <circle cx="7" cy="18" r="2"/>
+                    <circle cx="17" cy="18" r="2"/>
                 </svg>
                 <span>Veículos</span>
             </a>
 
             <a href="#" class="nav-item {{ request()->routeIs('abastecimentos.*') ? 'active' : '' }}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="M3 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18"/>
+                    <path d="M3 22h12"/>
+                    <path d="M18 7v10a2 2 0 0 0 4 0v-6a2 2 0 0 0-2-2h-2"/>
+                    <path d="M15 6h2l3 3"/>
+                    <path d="M7 6h4"/>
+                    <path d="M7 10h4"/>
                 </svg>
                 <span>Abastecimentos</span>
             </a>
         </nav>
+
 
         <div class="sidebar-footer">
             <div class="user-info">
@@ -75,6 +107,7 @@
         </div>
     </aside>
 
+
     <!-- Main Content -->
     <main class="main-content">
         <!-- Topbar -->
@@ -87,6 +120,13 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                     </svg>
                     <span class="notification-badge">3</span>
+                </button>
+
+                <button class="btn-notification">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                    </svg>
+                    Sair
                 </button>
             </div>
         </header>

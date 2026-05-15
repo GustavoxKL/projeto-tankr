@@ -8,7 +8,7 @@
     --white: #FFFFFF;
     --text-dark: #1A1A1A;
     --text-gray: #666666;
-    --border-gray: #E0E0E0;
+    --border-gray: rgba(255, 255, 255, 0.1);
     --success: #10B981;
     --error: #EF4444;
     --warning: #F59E0B;
@@ -32,8 +32,8 @@ body {
 
 .sidebar {
     width: 260px;
-    background: var(--sidebar-bg);
-    color: var(--white);
+    background: var(--white);
+    color: var(--text-dark);
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -45,7 +45,7 @@ body {
 
 .sidebar-header {
     padding: 24px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 3px solid var(--background);
 }
 
 .logo-small {
@@ -80,15 +80,14 @@ body {
     align-items: center;
     gap: 12px;
     padding: 14px 20px;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-dark);
     text-decoration: none;
     transition: all 0.3s ease;
     border-left: 3px solid transparent;
 }
 
 .nav-item:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--white);
+    background: var(--primary-yellow);
 }
 
 .nav-item.active {
@@ -106,7 +105,7 @@ body {
 
 .sidebar-footer {
     padding: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 4px solid var(--background);
 }
 
 .user-info {
@@ -193,7 +192,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid var(--border-gray);
+    border-left: 3px solid var(--background);
+    border-bottom: 2px solid var(--background);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -214,7 +214,7 @@ body {
     position: relative;
     width: 40px;
     height: 40px;
-    background: var(--background);
+    background: var(--white);
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -225,7 +225,7 @@ body {
 }
 
 .btn-notification:hover {
-    background: var(--border-gray);
+    background: var(--background);
 }
 
 .btn-notification svg {
