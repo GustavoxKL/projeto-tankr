@@ -137,13 +137,14 @@ body {
 .user-name {
     font-size: 14px;
     font-weight: 600;
-    color: var(--white);
+    color: var(--text-dark);
 }
 
 .user-role {
     font-size: 12px;
     color: rgba(255, 255, 255, 0.6);
     text-transform: capitalize;
+    color: var(--text-dark);
 }
 
 .logout-form {
@@ -232,6 +233,32 @@ body {
     width: 20px;
     height: 20px;
     color: var(--text-gray);
+}
+
+.btn-logout-topbar {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    background: var(--white);
+    border-radius: 8px;
+    padding: 8px;
+    width: 60%;
+    height: 40px;
+    color: var(--text-gray);
+    gap: 5px;
+    font-size: 14px;
+}
+
+.btn-logout-topbar svg {
+    width: 18px;
+    height: 18px;
+    color: var(--text-gray);
+}
+
+.btn-logout-topbar:hover {
+    background: var(--background);
 }
 
 .notification-badge {

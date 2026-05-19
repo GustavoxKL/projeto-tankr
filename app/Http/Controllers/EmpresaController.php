@@ -29,7 +29,7 @@ class EmpresaController extends Controller
                 'NomeEmpresa' => 'required|string|max:100',
                 'CNPJ' => 'required|string|max:18|unique:empresa,CNPJ',
                 'StatusEmpresa' => 'required|boolean',
-                'TelefoneEmpresa' => 'nullable|string|max:15',
+                'TelefoneEmpresa' => 'nullable|string|max:20',
                 'EnderecoEmpresa' => 'nullable|string|max:200'
             ]);
 
@@ -47,8 +47,6 @@ class EmpresaController extends Controller
     // ATUALIZAR
     public function update(Request $request, Empresa $empresa)
     {
-        //$empresa->update($request->all());
-        //return $empresa;
 
         $data = collect($request->validate([
             'NomeEmpresa' => 'nullable|string|max:100',

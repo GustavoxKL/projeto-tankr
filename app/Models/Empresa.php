@@ -10,7 +10,6 @@ class Empresa extends Model
     use HasFactory;
     
     protected $table = 'empresa';
-
     protected $primaryKey = 'ID_EMPRESA';
 
     public function getRouteKeyName()

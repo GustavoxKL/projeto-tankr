@@ -25,5 +25,8 @@ Route::middleware(['auth'])->group(function() {
         return view('dashboard_superadmin');
     })->name('dashboard.superadmin');
 
+    Route::get('/superadmin/empresas', [App\Http\Controllers\SuperAdmin\EmpresaViewController::class, 'index'])
+        ->name('superadmin.empresas.index');
+
     Route::post('/logout', [AuthController::class, 'logoutWeb'])->name('logout.web');
 });

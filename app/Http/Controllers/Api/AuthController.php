@@ -58,11 +58,17 @@ class AuthController extends Controller
 
         $token = $request->user()->createToken('auth_token')->plainTextToken;
 
-        session([
-            'api_token' => $token
-        ]);
 
         $user = Auth::user();
+
+        session([
+            'api_token' => $token,
+            'user_id' => $user->ID_USER,
+            'nome' => $user->NomeUser,
+            'email' => $user->email,
+            'tipo' => $user->TipoUser,
+            'empresa_id' => $user->FK_EMPRESA_ID_EMPRESA
+        ]);
 
         if ($user->TipoUser === 'admin') {
             return redirect()->route('dashboard.admin');
