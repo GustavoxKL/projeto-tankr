@@ -9,19 +9,19 @@ use Illuminate\Routing\Controller;
 
 class EmpresaController extends Controller
 {
-    // LISTAR
+    // Listar
     public function index()
     {
         return Empresa::all();
     }
 
-    // BUSCAR
+    // Buscar
     public function show(Empresa $empresa)
     {
         return $empresa;
     }
 
-    // CRIAR
+    // Criar
     public function store(Request $request)
     {
         try {
@@ -44,7 +44,7 @@ class EmpresaController extends Controller
         }
     }
 
-    // ATUALIZAR
+    // Atualizar/Editar
     public function update(Request $request, Empresa $empresa)
     {
 
@@ -66,7 +66,7 @@ class EmpresaController extends Controller
         ]);
     }
 
-    // DELETAR
+    // Deletar
     public function destroy(Empresa $empresa)
     {
         $empresa->delete();

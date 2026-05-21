@@ -11,19 +11,19 @@ use Illuminate\Support\Facades\Hash;
 
 class MotoristaController extends Controller
 {
-    // LISTAR
+    // Listar
     public function index()
     {
         return Motorista::all();
     }
 
-    // BUSCAR
+    // Buscar
     public function show(Motorista $motorista)
     {
         return $motorista;
     }
 
-    // CRIAR
+    // Criar
     public function store(Request $request)
     {
         try {
@@ -48,7 +48,7 @@ class MotoristaController extends Controller
         }
     }
 
-    // ATUALIZAR
+    // Atualizar/Editar
     public function update(Request $request, Motorista $motorista)
     {
         $data = collect($request->validate([
@@ -62,7 +62,6 @@ class MotoristaController extends Controller
         ->filter(fn($value) => !is_null($value) && $value !== '')
         ->toArray();
 
-        // criptografa senha SOMENTE se vier preenchida
         if (isset($data['SenhaMot'])) {
             $data['SenhaMot'] = Hash::make($data['SenhaMot']);
         }
@@ -75,7 +74,7 @@ class MotoristaController extends Controller
         ]);
     }
 
-    // DELETAR
+    // Deletar
     public function destroy(Motorista $motorista)
     {
         $motorista->delete();

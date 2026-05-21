@@ -9,19 +9,19 @@ use Illuminate\Http\Request;
 
 class VeiculoController extends Controller
 {
-    // LISTAR
+    // Listar
     public function index()
     {
         return Veiculo::all();
     }
 
-    // BUSCAR
+    // Buscar
     public function show(Veiculo $veiculo)
     {
         return $veiculo;
     }
 
-    // CRIAR
+    // Criar
     public function store(Request $request)
     {   
         try {
@@ -43,7 +43,7 @@ class VeiculoController extends Controller
         }
     }
 
-    // ATUALIZAR
+    // Atualizar/Editar
     public function update(Request $request, Veiculo $veiculo)
     {
 
@@ -51,7 +51,7 @@ class VeiculoController extends Controller
             'PlacaVei' => 'sometimes|string|max:7|unique:veiculo,PlacaVei',
             'ModeloVei' => 'sometimes|string|max:50',
             'AnoVei' => 'sometimes|integer',
-            'FK_EMPRESA_ID_EMPRESA' => 'nullable|integer'
+            'FK_EMPRESA_ID_EMPRESA' => 'sometimes|integer'
         ]))
         ->filter(fn($value) => !is_null($value) && $value !== '')
         ->toArray();
@@ -64,7 +64,7 @@ class VeiculoController extends Controller
         ]);
     }
 
-    // DELETAR
+    // Deletar
     public function destroy(Veiculo $veiculo)
     {
         $veiculo->delete();

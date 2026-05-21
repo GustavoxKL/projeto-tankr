@@ -10,19 +10,19 @@ use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
-    // LISTAR TODOS
+    // Listar
     public function index()
     {
         return Usuario::all();
     }
 
-    // BUSCAR POR ID
+    // Buscar
     public function show(Usuario $usuario)
     {
         return $usuario;
     }
 
-    // CRIAR 
+    // Criar
     public function store(Request $request)
     {
         try {
@@ -49,23 +49,22 @@ class UsuarioController extends Controller
         }
     }
 
-    // ATUALIZAR
+    // Atualizar/Editar
     public function update(Request $request, Usuario $usuario)
     {
         $data = collect($request->validate([
-            'NomeUser' => 'nullable|string|max:100',
-            'EnderecoUser' => 'nullable|string|max:200',
-            'TelefoneUser' => 'nullable|string|max:15',
-            'StatusUser' => 'nullable|boolean',
-            'email' => 'nullable|email|unique:usuario,email,' . $usuario->ID_USUARIO . ',ID_USUARIO',
-            'password' => 'nullable|min:6',
-            'TipoUser' => 'nullable|string|max:50',
+            'NomeUser' => 'sometimes|string|max:100',
+            'EnderecoUser' => 'sometimes|string|max:200',
+            'TelefoneUser' => 'sometimes|string|max:15',
+            'StatusUser' => 'sometimes|boolean',
+            'email' => 'sometimes|email|unique:usuario,email,' . $usuario->ID_USUARIO . ',ID_USUARIO',
+            'password' => 'sometimes|min:6',
+            'TipoUser' => 'sometimes|string|max:50',
             'FK_EMPRESA_ID_EMPRESA' => 'nullable|integer'
         ]))
         ->filter(fn($value) => !is_null($value) && $value !== '')
         ->toArray();
 
-        // criptografa senha SOMENTE se vier preenchida
         if (isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         }
@@ -78,7 +77,7 @@ class UsuarioController extends Controller
         ]);
     }
 
-    // DELETAR
+    // Deletar
     public function destroy(Usuario $usuario)
     {
         $usuario->delete();

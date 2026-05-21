@@ -25,10 +25,10 @@ class AuthController extends Controller
         if (Auth::attempt($request->only('email', 'password'))) {
             return $this->success([
                 'token' => $request->user()->createToken('auth_token')->plainTextToken
-            ], 'Authorized', 200);
+            ], 'Autorizado', 200);
         }
 
-        return $this->error(null, 'Not Authorized', 403);
+        return $this->error(null, 'Não Autorizado', 403);
     }
 
     // Logout API - POST
@@ -36,11 +36,11 @@ class AuthController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
 
-        return $this->success(null, 'Token Revoked', 200);
+        return $this->success(null, 'Token Revogado', 200);
     }
    
 
-    // Login na Web
+    // Login Web
     public function loginWeb(Request $request)
     {
         $credentials = $request->validate([
@@ -78,7 +78,7 @@ class AuthController extends Controller
             return redirect()->route('dashboard.superadmin');
         }
 
-        // Usuario se não for admin nem super
+        // Se não for admin nem superadmin
         Auth::logout();
 
         $request->session()->invalidate();
@@ -89,7 +89,7 @@ class AuthController extends Controller
         ]);
     }
 
-    // Logout na Web
+    // Logout Web
     public function logoutWeb(Request $request)
     {
         $token = session('api_token');

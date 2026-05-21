@@ -17,16 +17,23 @@ Route::post('/login', [AuthController::class, 'loginWeb'])->name('login.web');
 
 Route::middleware(['auth'])->group(function() {
 
+    // Rotas Admin
     Route::get('/dashboard-admin', function () {
         return view('dashboard_admin');
     })->name('dashboard.admin');
 
+
+
+    // Rotas SuperAdmin
     Route::get('/dashboard-superadmin', function () {
         return view('dashboard_superadmin');
     })->name('dashboard.superadmin');
 
     Route::get('/superadmin/empresas', [App\Http\Controllers\SuperAdmin\EmpresaViewController::class, 'index'])
         ->name('superadmin.empresas.index');
-
+    
+    
+    
+    //
     Route::post('/logout', [AuthController::class, 'logoutWeb'])->name('logout.web');
 });

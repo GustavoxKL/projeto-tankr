@@ -9,19 +9,19 @@ use Illuminate\Routing\Controller;
 
 class EstacaoAbastecimentoController extends Controller
 {
-    // LISTAR
+    // Listar
     public function index()
     {
         return EstacaoAbastecimento::all();
     }
 
-    // BUSCAR
+    // Buscar
     public function show(EstacaoAbastecimento $estacao)
     {
         return $estacao;
     }
 
-    // CRIAR
+    // Criar
     public function store(Request $request)
     {
         try {
@@ -41,16 +41,14 @@ class EstacaoAbastecimentoController extends Controller
         
     }
  
-    // ATUALIZAR
+    // Atualizar/Editar
     public function update(Request $request, EstacaoAbastecimento $estacao)
     {
-        //$estacao->update($request->all());
-        //return $estacao;
 
         $data = collect($request->validate([
-            'EnderecoEst' => 'nullable|string|max:100',
-            'Token' => 'nullable|integer',
-            'FK_EMPRESA_ID_EMPRESA' => 'nullable|integer'
+            'EnderecoEst' => 'sometimes|string|max:100',
+            'Token' => 'sometimes|integer',
+            'FK_EMPRESA_ID_EMPRESA' => 'sometimes|integer'
         ]))
         ->filter(fn($value) => !is_null($value) && $value !== '')
         ->toArray();
@@ -63,7 +61,7 @@ class EstacaoAbastecimentoController extends Controller
         ]);
     }
 
-    // DELETAR
+    // Deletar
     public function destroy(EstacaoAbastecimento $estacao)
     {
         $estacao->delete();

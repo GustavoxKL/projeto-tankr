@@ -11,5 +11,10 @@
 </head>
 <body>
 
+    <!-- Sidebar -->
+    @include('partials.sidebar_admin')
+
+
+    
 </body>
 </html>

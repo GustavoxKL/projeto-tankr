@@ -41,6 +41,7 @@ body {
     left: 0;
     top: 0;
     z-index: 1000;
+    box-shadow: 10px 0px 15px -5px rgba(0, 0, 0, 0.06);
 }
 
 .sidebar-header {
@@ -106,6 +107,7 @@ body {
 .sidebar-footer {
     padding: 20px;
     border-top: 3px solid var(--background);
+    box-shadow: 10px 0px 15px -5px rgba(0, 0, 0, 0.06);
 }
 
 .user-info {
@@ -194,7 +196,7 @@ body {
     align-items: center;
     justify-content: space-between;
     border-left: 3px solid var(--background);
-    border-bottom: 3px solid #e9e8e8;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -301,7 +303,6 @@ body {
     border: 1px solid #EF4444;
 }
 
-/* ==================== RESPONSIVO ==================== */
 
 @media (max-width: 1024px) {
     .sidebar {
