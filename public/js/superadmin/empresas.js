@@ -47,6 +47,7 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
+
 // ==================== CARREGAR DADOS DA EMPRESA ====================
 
 async function carregarDadosEmpresa(id) {
@@ -65,16 +66,17 @@ async function carregarDadosEmpresa(id) {
             // Preencher formulário
             document.getElementById('empresaId').value = empresa.ID_EMPRESA;
             document.getElementById('nome').value = empresa.NomeEmpresa || '';
-            document.getElementById('cnpj').value = empresa.CNPJEmpresa || '';
-            document.getElementById('email').value = empresa.EmailEmpresa || '';
+            document.getElementById('cnpj').value = empresa.CNPJ || '';
             document.getElementById('telefone').value = empresa.TelefoneEmpresa || '';
             document.getElementById('endereco').value = empresa.EnderecoEmpresa || '';
+            document.getElementById('status').value = empresa.StatusEmpresa ? '1' : '0';
         }
     } catch (error) {
         console.error('Erro ao carregar empresa:', error);
         alert('❌ Erro ao carregar dados da empresa');
     }
 }
+
 
 // ==================== SALVAR EMPRESA ====================
 
@@ -84,11 +86,10 @@ document.getElementById('formEmpresa').addEventListener('submit', async function
     const empresaId = document.getElementById('empresaId').value;
     const formData = {
         NomeEmpresa: document.getElementById('nome').value,
-        CNPJEmpresa: document.getElementById('cnpj').value,
-        EmailEmpresa: document.getElementById('email').value,
+        CNPJ: document.getElementById('cnpj').value,
         TelefoneEmpresa: document.getElementById('telefone').value,
         EnderecoEmpresa: document.getElementById('endereco').value,
-        StatusEmpresa: true
+        StatusEmpresa: document.getElementById('status').value === '1'
     };
     
     try {
@@ -240,16 +241,7 @@ document.getElementById('cnpj').addEventListener('blur', function(e) {
     }
 });
 
-// Validar Email
-document.getElementById('email').addEventListener('blur', function(e) {
-    const email = e.target.value;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
-    if (email && !emailRegex.test(email)) {
-        alert('⚠️ Email inválido');
-        e.target.focus();
-    }
-});
+
 
 // ==================== LOG INICIAL ====================
 

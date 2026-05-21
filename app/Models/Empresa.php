@@ -22,9 +22,9 @@ class Empresa extends Model
     protected $fillable = [
         'NomeEmpresa',
         'CNPJ',
-        'StatusEmpresa',
         'TelefoneEmpresa',
         'EnderecoEmpresa',
+        'StatusEmpresa',
         'DataCadastroEmpresa'
     ];
 

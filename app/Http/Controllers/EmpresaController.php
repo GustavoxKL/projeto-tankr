@@ -28,9 +28,9 @@ class EmpresaController extends Controller
             $data = $request->validate([
                 'NomeEmpresa' => 'required|string|max:100',
                 'CNPJ' => 'required|string|max:18|unique:empresa,CNPJ',
-                'StatusEmpresa' => 'required|boolean',
                 'TelefoneEmpresa' => 'nullable|string|max:20',
-                'EnderecoEmpresa' => 'nullable|string|max:200'
+                'EnderecoEmpresa' => 'nullable|string|max:200',
+                'StatusEmpresa' => 'required|boolean'
             ]);
 
             $data['DataCadastroEmpresa'] = now();
@@ -49,11 +49,11 @@ class EmpresaController extends Controller
     {
 
         $data = collect($request->validate([
-            'NomeEmpresa' => 'nullable|string|max:100',
-            'CNPJ' => 'nullable|string|max:18|unique:empresa,CNPJ',
-            'StatusEmpresa' => 'nullable|boolean',
-            'TelefoneEmpresa' => 'nullable|string|max:15',
-            'EnderecoEmpresa' => 'nullable|string|max:200'
+            'NomeEmpresa' => 'sometimes|string|max:100',
+            'CNPJ' => 'sometimes|string|max:18|unique:empresa,CNPJ',
+            'TelefoneEmpresa' => 'sometimes|string|max:15',
+            'EnderecoEmpresa' => 'sometimes|string|max:200',
+            'StatusEmpresa' => 'sometimes|boolean'
         ]))
         ->filter(fn($value) => !is_null($value) && $value !== '')
         ->toArray();

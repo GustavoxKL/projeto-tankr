@@ -75,8 +75,17 @@
 .card-header {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+.empresa-header-left {
+    display: flex;
     align-items: center;
-    margin-bottom: 16px;
+    gap: 12px;
+    flex: 1;
 }
 
 .empresa-icon {
@@ -87,12 +96,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .empresa-icon svg {
     width: 24px;
     height: 24px;
     color: #FFA000;
+}
+
+.empresa-info-header {
+    flex: 1;
+    min-width: 0;
 }
 
 .card-menu {
@@ -161,22 +176,22 @@
     background: #FEE2E2;
 }
 
-/* Empresa Info */
-.empresa-info {
-    margin-bottom: 12px;
-}
-
 .empresa-nome {
     font-size: 18px;
     font-weight: 700;
     color: #1A1A1A;
     margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .empresa-cnpj {
     font-size: 13px;
     color: #666666;
+    margin: 0;
 }
+
 
 /* Location */
 .empresa-location {
@@ -199,6 +214,48 @@
     font-size: 13px;
     color: #666666;
 }
+
+
+/* Telefone */
+.empresa-telefone {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+.empresa-telefone svg {
+    width: 16px;
+    height: 16px;
+    color: #666666;
+    flex-shrink: 0;
+}
+
+.empresa-telefone span {
+    font-size: 13px;
+    color: #666666;
+}
+
+/* Select do formulário */
+.form-group select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #E0E0E0;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    background: #FAFAFA;
+    cursor: pointer;
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: #FFC107;
+    background: #FFFFFF;
+}
+
 
 /* Stats */
 .empresa-stats {
@@ -239,6 +296,7 @@
     color: #1A1A1A;
 }
 
+
 /* Fuel */
 .empresa-fuel {
     display: flex;
@@ -257,6 +315,7 @@
     font-weight: 700;
     color: #1A1A1A;
 }
+
 
 /* Status */
 .empresa-status {

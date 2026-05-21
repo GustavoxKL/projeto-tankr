@@ -48,9 +48,9 @@ class VeiculoController extends Controller
     {
 
         $data = collect($request->validate([
-            'PlacaVei' => 'nullable|string|max:7|unique:veiculo,PlacaVei',
-            'ModeloVei' => 'nullable|string|max:50',
-            'AnoVei' => 'nullable|integer',
+            'PlacaVei' => 'sometimes|string|max:7|unique:veiculo,PlacaVei',
+            'ModeloVei' => 'sometimes|string|max:50',
+            'AnoVei' => 'sometimes|integer',
             'FK_EMPRESA_ID_EMPRESA' => 'nullable|integer'
         ]))
         ->filter(fn($value) => !is_null($value) && $value !== '')
