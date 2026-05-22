@@ -60,5 +60,6 @@
     <!-- Scripts -->
     <script src="{{ asset('js/dashboard_superadmin.js') }}"></script>
     @yield('scripts')
+    
 </body>
 </html>

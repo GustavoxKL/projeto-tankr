@@ -9,7 +9,7 @@
     </div>
 
     <nav class="sidebar-nav">
-        <a href="{{ route('dashboard.superadmin') }}" class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+        <a href="{{ route('dashboard.admin') }}" class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="2" y="1" width="9" height="9" rx="2"/>
                 <rect x="16" y="2" width="6" height="6" rx="1.5"/>
