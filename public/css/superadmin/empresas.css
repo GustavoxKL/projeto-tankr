@@ -47,6 +47,124 @@
     height: 20px;
 }
 
+
+/* ==================== HEADER ACTIONS ==================== */
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* ==================== CAMPO DE BUSCA ==================== */
+
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: #FFFFFF;
+    border: 2px solid #E0E0E0;
+    border-radius: 8px;
+    padding: 0 16px;
+    transition: all 0.3s ease;
+    min-width: 280px;
+}
+
+.search-box:focus-within {
+    border-color: #FFC107;
+    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.1);
+}
+
+.search-box svg {
+    width: 20px;
+    height: 20px;
+    color: #666666;
+    flex-shrink: 0;
+}
+
+.search-box input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 12px 12px;
+    font-size: 14px;
+    outline: none;
+    color: #1A1A1A;
+}
+
+.search-box input::placeholder {
+    color: #999999;
+}
+
+.btn-clear-search {
+    width: 24px;
+    height: 24px;
+    background: #F5F5F5;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.btn-clear-search:hover {
+    background: #E0E0E0;
+}
+
+.btn-clear-search svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* ==================== MENSAGEM SEM RESULTADOS ==================== */
+
+.empty-search {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    background: #FFFFFF;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.empty-search svg {
+    width: 60px;
+    height: 60px;
+    color: #CCCCCC;
+    margin-bottom: 12px;
+}
+
+.empty-search h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1A1A1A;
+    margin-bottom: 8px;
+}
+
+.empty-search p {
+    font-size: 14px;
+    color: #666666;
+}
+
+/* ==================== RESPONSIVO ==================== */
+
+@media (max-width: 768px) {
+    .header-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+    }
+
+    .search-box {
+        min-width: 100%;
+    }
+}
+
+
+
 /* ==================== GRID DE CARDS ==================== */
 
 .empresas-grid {

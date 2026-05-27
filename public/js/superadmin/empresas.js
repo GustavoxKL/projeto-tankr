@@ -242,6 +242,62 @@ document.getElementById('cnpj').addEventListener('blur', function(e) {
 });
 
 
+// ==================== BUSCA DE EMPRESAS ====================
+
+function filtrarEmpresas() {
+    const input = document.getElementById('searchEmpresa');
+    const filtro = input.value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.empresa-card');
+    const btnClear = document.getElementById('btnClearSearch');
+    const grid = document.querySelector('.empresas-grid');
+    
+    // Mostrar/esconder botão de limpar
+    btnClear.style.display = filtro ? 'flex' : 'none';
+    
+    let temResultado = false;
+    
+    cards.forEach(card => {
+        const nome = card.getAttribute('data-nome') || '';
+        const cnpj = card.getAttribute('data-cnpj') || '';
+        
+        if (nome.includes(filtro) || cnpj.includes(filtro)) {
+            card.style.display = 'block';
+            temResultado = true;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    
+    // Remover mensagem antiga
+    const emptySearchAnterior = document.getElementById('empty-search-result');
+    if (emptySearchAnterior) {
+        emptySearchAnterior.remove();
+    }
+    
+    // Mostrar mensagem se não encontrou nada
+    if (!temResultado && filtro) {
+        const mensagem = document.createElement('div');
+        mensagem.id = 'empty-search-result';
+        mensagem.className = 'empty-search';
+        mensagem.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <h3>Nenhuma empresa encontrada</h3>
+            <p>Tente pesquisar com outro termo</p>
+        `;
+        grid.appendChild(mensagem);
+    }
+}
+
+function limparBusca() {
+    const input = document.getElementById('searchEmpresa');
+    input.value = '';
+    filtrarEmpresas();
+    input.focus();
+}
+
+
 
 // ==================== LOG INICIAL ====================
 

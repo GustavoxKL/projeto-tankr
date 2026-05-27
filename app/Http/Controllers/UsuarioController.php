@@ -53,20 +53,25 @@ class UsuarioController extends Controller
     public function update(Request $request, Usuario $usuario)
     {
         $data = collect($request->validate([
-            'NomeUser' => 'sometimes|string|max:100',
-            'EnderecoUser' => 'sometimes|string|max:200',
-            'TelefoneUser' => 'sometimes|string|max:15',
+            'NomeUser' => 'sometimes|required|string|max:100',
+            'EnderecoUser' => 'sometimes|nulllable|string|max:200',
+            'TelefoneUser' => 'sometimes|nullable|string|max:15',
             'StatusUser' => 'sometimes|boolean',
-            'email' => 'sometimes|email|unique:usuario,email,' . $usuario->ID_USUARIO . ',ID_USUARIO',
-            'password' => 'sometimes|min:6',
-            'TipoUser' => 'sometimes|string|max:50',
-            'FK_EMPRESA_ID_EMPRESA' => 'nullable|integer'
+            'email' => 'sometimes|required|email|unique:usuario,email,' . $usuario->ID_USUARIO . ',ID_USUARIO',
+            'password' => 'sometimes|nullable|string|min:6',
+            'TipoUser' => 'sometimes|required|in:superadmin,admin',
+            'FK_EMPRESA_ID_EMPRESA' => 'sometimes|nullable|exists:empresa,ID_EMPRESA'
         ]))
         ->filter(fn($value) => !is_null($value) && $value !== '')
         ->toArray();
 
         if (isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
+        }
+
+        // Converter StatusUser para boolean
+        if (isset($data['StatusUser'])) {
+            $data['StatusUser'] = ($data['StatusUser'] == 1 || $data['StatusUser'] === true) ? 1 : 0;
         }
 
         $usuario->update($data);

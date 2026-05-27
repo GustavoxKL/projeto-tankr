@@ -33,23 +33,43 @@
         <!-- Page Content -->
         <div class="page-content">
             <div class="empresas-container">
-                <!-- Header com botão adicionar -->
+                <!-- Header -->
                 <div class="page-header">
                     <div class="header-info">
                         <p class="section-subtitle">Gerencie as empresas do sistema</p>
                     </div>
-                    <button class="btn-add-empresa" onclick="abrirModalEmpresa()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                        </svg>
-                        Adicionar Empresa
-                    </button>
+
+                    <div class="header-actions">
+                        <div class="search-box">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                            <input 
+                                type="text" 
+                                id="searchEmpresa" 
+                                placeholder="Pesquisar empresa..." 
+                                oninput="filtrarEmpresas()"
+                            > 
+                            <button class="btn-clear-search" id="btnClearSearch" onclick="limparBusca()" style="display: none;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <button class="btn-add-empresa" onclick="abrirModalEmpresa()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            Adicionar Empresa
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Grid de Cards -->
                 <div class="empresas-grid">
                     @forelse($empresas as $empresa)
-                    <div class="empresa-card">
+                    <div class="empresa-card" data-nome="{{ strtolower($empresa->NomeEmpresa) }}" data-cnpj="{{ $empresa->CNPJ }}">
                         <!-- Header do Card -->
                         <div class="card-header">
                             <div class="empresa-header-left">

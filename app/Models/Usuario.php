@@ -40,18 +40,18 @@ class Usuario extends Authenticatable
 
     public function empresa()
     {
-        return $this->belongTo(Empresa::class, 'FK_EMPRESA_ID_EMPRESA', 'ID_EMPRESA');
+        return $this->belongsTo(Empresa::class, 'FK_EMPRESA_ID_EMPRESA', 'ID_EMPRESA');
     }
 
     // Método para verificar se usuário está ativo
     public function isAtivo()
     {
-        return $this->ativo === true || $this->ativo === 1;
+        return $this->StatusUser === true || $this->StatusUser === 1;
     }
 
     // Método para verificar se é super admin
     public function isSuperAdmin()
     {
-        return $this->tipo === 'superadmin';
+        return $this->TipoUser === 'superadmin';
     }
 }
