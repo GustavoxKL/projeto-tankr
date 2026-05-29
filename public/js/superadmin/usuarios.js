@@ -1,5 +1,3 @@
-// ==================== VARIÁVEIS GLOBAIS ====================
-
 const API_BASE = window.location.origin;
 let usuarioEditando = null;
 
@@ -70,7 +68,7 @@ document.addEventListener('click', function(e) {
 });
 
 
-// ==================== MODAL ====================
+// Modal
 
 function abrirModalUsuario(usuarioId = null) {
     const modal = document.getElementById('modalUsuario');
@@ -78,15 +76,14 @@ function abrirModalUsuario(usuarioId = null) {
     const title = document.getElementById('modalTitle');
     const passwordHint = document.getElementById('passwordHint');
     const passwordInput = document.getElementById('password');
+    const statusGroup = document.getElementById('statusGroup');
     
-    // Limpar formulário
     form.reset();
     document.getElementById('usuarioId').value = '';
     document.getElementById('empresa_search').value = '';
     document.getElementById('empresa_id').value = '';
     usuarioEditando = null;
     
-    // Esconder campo empresa inicialmente
     document.getElementById('empresaGroup').style.display = 'none';
     document.getElementById('empresa_id').required = false;
     
@@ -95,12 +92,14 @@ function abrirModalUsuario(usuarioId = null) {
         title.textContent = 'Editar Usuário';
         passwordInput.required = false;
         passwordHint.style.display = 'block';
+        statusGroup.style.display = 'block';
         carregarDadosUsuario(usuarioId);
     } else {
         // Modo criação
         title.textContent = 'Adicionar Usuário';
         passwordInput.required = true;
         passwordHint.style.display = 'none';
+        statusGroup.style.display = 'none';
     }
     
     modal.classList.add('show');
@@ -111,7 +110,6 @@ function fecharModalUsuario() {
     modal.classList.remove('show');
 }
 
-// Fechar modal ao clicar fora
 document.addEventListener('click', function(e) {
     const modal = document.getElementById('modalUsuario');
     if (e.target === modal) {
@@ -119,7 +117,6 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Fechar modal com ESC
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         fecharModalUsuario();
@@ -147,7 +144,7 @@ function toggleEmpresaField() {
     }
 }
 
-// ==================== CARREGAR DADOS DO USUÁRIO ====================
+// Dados do User
 
 async function carregarDadosUsuario(id) {
     try {
@@ -171,12 +168,15 @@ async function carregarDadosUsuario(id) {
             document.getElementById('endereco').value = usuario.EnderecoUser || '';
             document.getElementById('status').value = usuario.StatusUser ? '1' : '0';
             
-            // Trigger para mostrar campo empresa se necessário
+            // IMPORTANTE: Chamar toggleEmpresaField PRIMEIRO para mostrar o campo
             toggleEmpresaField();
             
-            // Selecionar empresa se tiver
+            // Depois preencher empresa (se tiver)
             if (usuario.FK_EMPRESA_ID_EMPRESA && usuario.empresa) {
-                selecionarEmpresa(usuario.FK_EMPRESA_ID_EMPRESA, usuario.empresa.NomeEmpresa);
+                // Pequeno delay para garantir que o campo já está visível
+                setTimeout(() => {
+                    selecionarEmpresa(usuario.FK_EMPRESA_ID_EMPRESA, usuario.empresa.NomeEmpresa);
+                }, 100);
             }
         }
     } catch (error) {
@@ -185,7 +185,7 @@ async function carregarDadosUsuario(id) {
     }
 }
 
-// ==================== SALVAR USUÁRIO ====================
+// Adicionar
 
 document.getElementById('formUsuario').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -193,34 +193,47 @@ document.getElementById('formUsuario').addEventListener('submit', async function
     const usuarioId = document.getElementById('usuarioId').value;
     const tipo = document.getElementById('tipo').value;
     const password = document.getElementById('password').value;
+    const empresaId = document.getElementById('empresa_id').value;
     
     // Validar empresa para admin e user
-    if ((tipo === 'admin' || tipo === 'user') && !document.getElementById('empresa_id').value) {
+    if ((tipo === 'admin' || tipo === 'user') && !empresaId) {
         alert('⚠️ Selecione uma empresa para este tipo de usuário');
         return;
     }
     
+    // Montar objeto com dados (apenas os preenchidos)
     const formData = {
         NomeUser: document.getElementById('nome').value,
         email: document.getElementById('email').value,
         TipoUser: tipo,
-        TelefoneUser: document.getElementById('telefone').value,
-        EnderecoUser: document.getElementById('endereco').value,
-        StatusUser: document.getElementById('status').value === '1',
-        FK_EMPRESA_ID_EMPRESA: (tipo === 'admin' || tipo === 'user') ? document.getElementById('empresa_id').value : null
+        TelefoneUser: document.getElementById('telefone').value || null,
+        EnderecoUser: document.getElementById('endereco').value || null,
     };
     
+    if (usuarioId) {
+        formData.StatusUser = document.getElementById('status').value === '1' ? 1 : 0;
+    }
+
+    // Adicionar empresa se for admin ou user
+    if (tipo === 'admin' || tipo === 'user') {
+        formData.FK_EMPRESA_ID_EMPRESA = parseInt(empresaId);
+    } else {
+        // Superadmin não tem empresa
+        formData.FK_EMPRESA_ID_EMPRESA = null;
+    }
+    
     // Adicionar senha apenas se foi preenchida
-    if (password) {
+    if (password && password.trim() !== '') {
         formData.password = password;
     }
+    
+    console.log('📤 Enviando dados:', formData);
     
     try {
         let url = `${API_BASE}/api/usuarios`;
         let method = 'POST';
         
         if (usuarioId) {
-            // Atualizar
             url = `${API_BASE}/api/usuarios/${usuarioId}`;
             method = 'PUT';
         }
@@ -235,39 +248,41 @@ document.getElementById('formUsuario').addEventListener('submit', async function
             body: JSON.stringify(formData)
         });
         
+        const data = await response.json();
+        console.log('📥 Resposta:', data);
+        
         if (response.ok) {
             alert(`✅ Usuário ${usuarioId ? 'atualizado' : 'criado'} com sucesso!`);
             fecharModalUsuario();
             window.location.reload();
         } else {
-            const error = await response.json();
-            let errorMsg = 'Erro ao salvar usuário:\n';
+            let errorMsg = 'Erro ao salvar usuário:\n\n';
             
-            if (error.errors) {
-                Object.values(error.errors).forEach(errors => {
-                    errors.forEach(err => {
+            if (data.errors) {
+                Object.entries(data.errors).forEach(([campo, erros]) => {
+                    erros.forEach(err => {
                         errorMsg += `• ${err}\n`;
                     });
                 });
-            } else if (error.message) {
-                errorMsg += error.message;
+            } else if (data.message) {
+                errorMsg += data.message;
             }
             
             alert(errorMsg);
         }
     } catch (error) {
-        console.error('Erro:', error);
+        console.error('❌ Erro:', error);
         alert('❌ Erro de conexão com o servidor');
     }
 });
 
-// ==================== EDITAR USUÁRIO ====================
+// Editar
 
 function editarUsuario(id) {
     abrirModalUsuario(id);
 }
 
-// ==================== EXCLUIR USUÁRIO ====================
+// Excluir
 
 async function excluirUsuario(id) {
     if (!confirm('⚠️ Tem certeza que deseja excluir este usuário?\n\nEsta ação não pode ser desfeita!')) {
@@ -410,8 +425,6 @@ function limparBuscaUsuario() {
 }
 
 
-
-
-// ==================== LOG INICIAL ====================
+// Log inicial
 
 console.log('✅ usuarios.js carregado com sucesso!');

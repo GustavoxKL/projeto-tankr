@@ -1,27 +1,27 @@
-// ==================== VARIÁVEIS GLOBAIS ====================
-
 const API_BASE = window.location.origin;
 let empresaEditando = null;
 
-// ==================== MODAL ====================
+// Modal
 
 function abrirModalEmpresa(empresaId = null) {
     const modal = document.getElementById('modalEmpresa');
     const form = document.getElementById('formEmpresa');
     const title = document.getElementById('modalTitle');
+    const statusGroup = document.getElementById('statusGroup');
     
-    // Limpar formulário
     form.reset();
     document.getElementById('empresaId').value = '';
     empresaEditando = null;
     
     if (empresaId) {
-        // Modo edição
+        // editar
         title.textContent = 'Editar Empresa';
+        statusGroup.style.display = 'block';
         carregarDadosEmpresa(empresaId);
     } else {
-        // Modo criação
+        // criar
         title.textContent = 'Adicionar Empresa';
+        statusGroup.style.display = 'none';
     }
     
     modal.classList.add('show');
@@ -32,7 +32,6 @@ function fecharModalEmpresa() {
     modal.classList.remove('show');
 }
 
-// Fechar modal ao clicar fora
 document.addEventListener('click', function(e) {
     const modal = document.getElementById('modalEmpresa');
     if (e.target === modal) {
@@ -40,7 +39,6 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Fechar modal com ESC
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         fecharModalEmpresa();
@@ -48,7 +46,7 @@ document.addEventListener('keydown', function(e) {
 });
 
 
-// ==================== CARREGAR DADOS DA EMPRESA ====================
+// Dados da Empresa
 
 async function carregarDadosEmpresa(id) {
     try {
@@ -78,7 +76,7 @@ async function carregarDadosEmpresa(id) {
 }
 
 
-// ==================== SALVAR EMPRESA ====================
+// Adicionar
 
 document.getElementById('formEmpresa').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -87,10 +85,15 @@ document.getElementById('formEmpresa').addEventListener('submit', async function
     const formData = {
         NomeEmpresa: document.getElementById('nome').value,
         CNPJ: document.getElementById('cnpj').value,
-        TelefoneEmpresa: document.getElementById('telefone').value,
-        EnderecoEmpresa: document.getElementById('endereco').value,
-        StatusEmpresa: document.getElementById('status').value === '1'
+        TelefoneEmpresa: document.getElementById('telefone').value || null,
+        EnderecoEmpresa: document.getElementById('endereco').value || null,
     };
+
+    if (empresaId) {
+        formData.StatusEmpresa = document.getElementById('status').value === '1' ? 1 : 0;
+    }
+
+    console.log('Enviando dados:', formData);
     
     try {
         let url = `${API_BASE}/api/empresas`;
@@ -111,13 +114,15 @@ document.getElementById('formEmpresa').addEventListener('submit', async function
             },
             body: JSON.stringify(formData)
         });
+
+        const data = await response.json();
+        console.log('Resposta:', data);
         
         if (response.ok) {
             alert(`✅ Empresa ${empresaId ? 'atualizada' : 'criada'} com sucesso!`);
             fecharModalEmpresa();
             window.location.reload();
         } else {
-            const error = await response.json();
             let errorMsg = 'Erro ao salvar empresa:\n';
             
             if (error.errors) {
@@ -126,6 +131,8 @@ document.getElementById('formEmpresa').addEventListener('submit', async function
                         errorMsg += `• ${err}\n`;
                     });
                 });
+            } else if (data.message) {
+                errorMsg += data.message;
             }
             
             alert(errorMsg);
@@ -160,13 +167,13 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// ==================== EDITAR EMPRESA ====================
+// Editar
 
 function editarEmpresa(id) {
     abrirModalEmpresa(id);
 }
 
-// ==================== EXCLUIR EMPRESA ====================
+// Excluir 
 
 async function excluirEmpresa(id) {
     if (!confirm('⚠️ Tem certeza que deseja excluir esta empresa?\n\nTodos os dados relacionados (motoristas, veículos, abastecimentos) serão excluídos permanentemente!')) {
@@ -188,6 +195,7 @@ async function excluirEmpresa(id) {
         } else {
             alert('❌ Erro ao excluir empresa');
         }
+        
     } catch (error) {
         console.error('Erro:', error);
         alert('❌ Erro de conexão com o servidor');
@@ -242,7 +250,7 @@ document.getElementById('cnpj').addEventListener('blur', function(e) {
 });
 
 
-// ==================== BUSCA DE EMPRESAS ====================
+// Busca
 
 function filtrarEmpresas() {
     const input = document.getElementById('searchEmpresa');

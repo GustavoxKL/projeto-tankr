@@ -6,21 +6,21 @@ namespace App\Http\Controllers\SuperAdmin;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use App\Models\Empresa;
-use App\Models\Usuario;
+use App\Models\Motorista;
 
-class UsuarioViewController extends Controller
+class MotoristaViewController extends Controller
 {
     public function index()
     {
         
-        $usuarios = Usuario::with('empresa')
-            ->orderBy('ID_USER', 'desc')
+        $motoristas = Motorista::with('empresa')
+            ->orderBy('ID_MOTORISTA', 'desc')
             ->get();
-
+        
         $empresas = Empresa::where('StatusEmpresa', true)
             ->orderBy('NomeEmpresa', 'asc')
             ->get();
 
-        return view('superadmin.usuarios.index', compact('usuarios', 'empresas'));
+        return view('superadmin.motoristas.index', compact('motoristas', 'empresas'));
     }
 }

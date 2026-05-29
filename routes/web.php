@@ -45,10 +45,10 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/superadmin/usuarios', [App\Http\Controllers\SuperAdmin\UsuarioViewController::class, 'index'])
         ->name('superadmin.usuarios.index');
 
-    Route::get('/superadmin/motoristas', [App\Http\Controllers\SuperAdmin\EmpresaViewController::class, 'index'])
+    Route::get('/superadmin/motoristas', [App\Http\Controllers\SuperAdmin\MotoristaViewController::class, 'index'])
         ->name('superadmin.motoristas.index');
 
-    Route::get('/superadmin/veiculos', [App\Http\Controllers\SuperAdmin\EmpresaViewController::class, 'index'])
+    Route::get('/superadmin/veiculos', [App\Http\Controllers\SuperAdmin\VeiculoViewController::class, 'index'])
         ->name('superadmin.veiculos.index');
 
     Route::get('/superadmin/abastecimentos', [App\Http\Controllers\SuperAdmin\EmpresaViewController::class, 'index'])

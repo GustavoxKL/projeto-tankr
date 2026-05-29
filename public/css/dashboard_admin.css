@@ -1,5 +1,3 @@
-/* ==================== VARIÁVEIS ==================== */
-
 :root {
     --primary-yellow: #FFC107;
     --primary-dark: #FFA000;
@@ -28,7 +26,7 @@ body {
     min-height: 100vh;
 }
 
-/* ==================== SIDEBAR ==================== */
+/* Sidebar */
 
 .sidebar {
     width: 260px;
@@ -68,7 +66,7 @@ body {
     letter-spacing: 1px;
 }
 
-/* ==================== SIDEBAR NAV ==================== */
+/* Sidebar Nav */
 
 .sidebar-nav {
     flex: 1;
@@ -102,7 +100,7 @@ body {
     height: 22px;
 }
 
-/* ==================== SIDEBAR FOOTER ==================== */
+/* Sidebar Footer */
 
 .sidebar-footer {
     padding: 20px;
@@ -178,7 +176,6 @@ body {
     height: 18px;
 }
 
-/* ==================== MAIN CONTENT ==================== */
 
 .main-content {
     flex: 1;
@@ -187,7 +184,8 @@ body {
     flex-direction: column;
 }
 
-/* ==================== TOPBAR ==================== */
+
+/* Topbar */
 
 .topbar {
     background: var(--white);
@@ -275,14 +273,12 @@ body {
     border-radius: 10px;
 }
 
-/* ==================== PAGE CONTENT ==================== */
+
 
 .page-content {
     flex: 1;
     padding: 32px;
 }
-
-/* ==================== ALERTS ==================== */
 
 .alert {
     padding: 14px 18px;
@@ -303,6 +299,8 @@ body {
     border: 1px solid #EF4444;
 }
 
+
+/* Responsivo */
 
 @media (max-width: 1024px) {
     .sidebar {

@@ -230,9 +230,9 @@
                             <input type="text" id="endereco" name="endereco">
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" id="statusGroup" style="display: none;">
                             <label for="status">Status *</label>
-                            <select id="status" name="status" required>
+                            <select id="status" name="status">
                                 <option value="1">Ativo</option>
                                 <option value="0">Inativo</option>
                             </select>

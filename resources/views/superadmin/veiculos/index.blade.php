@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>TANKR - Empresas</title>
+    <title>TANKR - Veiculos</title>
 
     <link rel="stylesheet" href="{{ asset('css/dashboard_superadmin.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/superadmin/empresas.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/superadmin/veiculos.css') }}">
 </head>
 <body>
 
@@ -18,7 +18,7 @@
     <main class="main-content">
         <!-- Topbar -->
         <header class="topbar">
-            <h1 class="page-title">Empresas Cadastradas</h1>
+            <h1 class="page-title">Veiculos Cadastradas</h1>
             
             <div class="topbar-actions">
                 <button class="btn-notification">
@@ -205,9 +205,9 @@
                             <input type="text" id="endereco" name="endereco">
                         </div>
 
-                        <div class="form-group" id="statusGroup" style="display: none;">
+                        <div class="form-group">
                             <label for="status">Status *</label>
-                            <select id="status" name="status">
+                            <select id="status" name="status" required>
                                 <option value="1">Ativa</option>
                                 <option value="0">Inativa</option>
                             </select>
@@ -223,6 +223,6 @@
         </div>
     </main>
 
-    <script src="{{ asset('js/superadmin/empresas.js') }}"></script>
+    <script src="{{ asset('js/superadmin/veiculos.js') }}"></script>
 </body>
 </html>

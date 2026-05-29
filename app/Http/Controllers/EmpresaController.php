@@ -29,10 +29,11 @@ class EmpresaController extends Controller
                 'NomeEmpresa' => 'required|string|max:100',
                 'CNPJ' => 'required|string|max:18|unique:empresa,CNPJ',
                 'TelefoneEmpresa' => 'nullable|string|max:20',
-                'EnderecoEmpresa' => 'nullable|string|max:200',
-                'StatusEmpresa' => 'required|boolean'
+                'EnderecoEmpresa' => 'nullable|string|max:200'
             ]);
 
+            
+            $data['StatusEmpresa'] = 1;
             $data['DataCadastroEmpresa'] = now();
 
             Empresa::create($data);
@@ -47,16 +48,26 @@ class EmpresaController extends Controller
     // Atualizar/Editar
     public function update(Request $request, Empresa $empresa)
     {
-
-        $data = collect($request->validate([
-            'NomeEmpresa' => 'sometimes|string|max:100',
-            'CNPJ' => 'sometimes|string|max:18|unique:empresa,CNPJ',
-            'TelefoneEmpresa' => 'sometimes|string|max:15',
-            'EnderecoEmpresa' => 'sometimes|string|max:200',
+        $data = $request->validate([
+            'NomeEmpresa' => 'sometimes|required|string|max:100',
+            'CNPJ' => 'sometimes|required|string|max:18|unique:empresa,CNPJ,' . $empresa->ID_EMPRESA . ',ID_EMPRESA',
+            'TelefoneEmpresa' => 'sometimes|nullable|string|max:15',
+            'EnderecoEmpresa' => 'sometimes|nullable|string|max:200',
             'StatusEmpresa' => 'sometimes|boolean'
-        ]))
-        ->filter(fn($value) => !is_null($value) && $value !== '')
-        ->toArray();
+        ]);
+
+        // Garantir que é array
+        if ($data instanceof \Illuminate\Support\Collection) {
+            $data = $data->toArray();
+        }
+
+        // Converter StatusEmpresa para boolean (0 ou 1)
+        if (isset($data['StatusEmpresa'])) {
+            $data['StatusEmpresa'] = ($data['StatusEmpresa'] == 1 || $data['StatusEmpresa'] === true) ? 1 : 0;
+        }
+
+        // Remover apenas strings vazias (mantém null)
+        $data = array_filter($data, fn($value) => $value !== '');
 
         $empresa->update($data);
 

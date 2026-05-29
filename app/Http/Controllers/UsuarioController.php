@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Empresa;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -13,13 +14,13 @@ class UsuarioController extends Controller
     // Listar
     public function index()
     {
-        return Usuario::all();
+        return Usuario::with('empresa')->get();
     }
 
     // Buscar
     public function show(Usuario $usuario)
     {
-        return $usuario;
+        return $usuario->load('empresa');
     }
 
     // Criar
@@ -30,14 +31,14 @@ class UsuarioController extends Controller
                 'NomeUser' => 'required|string|max:100',
                 'EnderecoUser' => 'nullable|string|max:200',
                 'TelefoneUser' => 'nullable|string|max:15',
-                'StatusUser' => 'required|boolean',
                 'email' => 'required|email|unique:usuario,email',
                 'password' => 'required|min:6',
-                'TipoUser' => 'nullable|string|max:50',
-                'FK_EMPRESA_ID_EMPRESA' => 'required|integer'
+                'TipoUser' => 'required|in:superadmin,admin,user',
+                'FK_EMPRESA_ID_EMPRESA' => 'nullable|integer|exists:empresa,ID_EMPRESA'
             ]);
             
             $data['password'] = Hash::make($data['password']);
+            $data['StatusUser'] = 1;
             $data['DataCadastroUser'] = now();
 
             Usuario::create($data);
@@ -52,33 +53,40 @@ class UsuarioController extends Controller
     // Atualizar/Editar
     public function update(Request $request, Usuario $usuario)
     {
-        $data = collect($request->validate([
+        $validated = $request->validate([
             'NomeUser' => 'sometimes|required|string|max:100',
-            'EnderecoUser' => 'sometimes|nulllable|string|max:200',
+            'EnderecoUser' => 'sometimes|nullable|string|max:200',
             'TelefoneUser' => 'sometimes|nullable|string|max:15',
             'StatusUser' => 'sometimes|boolean',
-            'email' => 'sometimes|required|email|unique:usuario,email,' . $usuario->ID_USUARIO . ',ID_USUARIO',
+            'email' => 'sometimes|required|email|unique:usuario,email,' . $usuario->ID_USER . ',ID_USER',
             'password' => 'sometimes|nullable|string|min:6',
-            'TipoUser' => 'sometimes|required|in:superadmin,admin',
+            'TipoUser' => 'sometimes|required|in:superadmin,admin,user',
             'FK_EMPRESA_ID_EMPRESA' => 'sometimes|nullable|exists:empresa,ID_EMPRESA'
-        ]))
-        ->filter(fn($value) => !is_null($value) && $value !== '')
-        ->toArray();
+        ]);
 
-        if (isset($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
-        }
+        // Garantir que é array
+        $data = is_array($validated) ? $validated : (array) $validated;
 
         // Converter StatusUser para boolean
         if (isset($data['StatusUser'])) {
-            $data['StatusUser'] = ($data['StatusUser'] == 1 || $data['StatusUser'] === true) ? 1 : 0;
+            $data['StatusUser'] = $data['StatusUser'] ? 1 : 0;
         }
+
+        // Tratar senha
+        if (isset($data['password']) && !empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
+        // Remover apenas strings vazias (mantém null)
+        $data = array_filter($data, fn($value) => $value !== '');
 
         $usuario->update($data);
 
         return response()->json([
             'message' => 'Usuário atualizado com sucesso',
-            'data' => $usuario
+            'data' => $usuario->load('empresa')
         ]);
     }
 

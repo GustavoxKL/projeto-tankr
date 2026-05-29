@@ -11,7 +11,9 @@ class EmpresaViewController extends Controller
 {
     public function index()
     {
-        $empresas = Empresa::withCount(['motoristas', 'veiculos'])->orderBy('ID_EMPRESA', 'desc')->get();
+        $empresas = Empresa::withCount(['motoristas', 'veiculos'])
+            ->orderBy('ID_EMPRESA', 'desc')
+            ->get();
         
         return view('superadmin.empresas.index', compact('empresas'));
     }
