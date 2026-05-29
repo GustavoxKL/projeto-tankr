@@ -296,15 +296,17 @@
     text-align: center;
 }
 
-.action-buttons {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
+/* ==================== MENU DROPDOWN NA TABELA ==================== */
+
+.row-menu {
+    position: relative;
+    display: inline-block;
 }
 
-.btn-action {
+.row-menu .btn-menu {
     width: 32px;
     height: 32px;
+    background: transparent;
     border: none;
     border-radius: 6px;
     cursor: pointer;
@@ -312,31 +314,58 @@
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+    margin: 0 auto;
 }
 
-.btn-action svg {
-    width: 18px;
-    height: 18px;
+.row-menu .btn-menu:hover {
+    background: #F5F5F5;
 }
 
-.btn-edit {
-    background: #E3F2FD;
-    color: #1976D2;
+.row-menu .btn-menu svg {
+    width: 20px;
+    height: 20px;
+    color: #666666;
 }
 
-.btn-edit:hover {
-    background: #1976D2;
-    color: #FFFFFF;
+.row-menu .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    min-width: 140px;
+    z-index: 100;
+    overflow: hidden;
+    margin-top: 4px;
 }
 
-.btn-delete {
-    background: #FFEBEE;
-    color: #C62828;
+.row-menu .dropdown-menu.show {
+    display: block;
 }
 
-.btn-delete:hover {
-    background: #C62828;
-    color: #FFFFFF;
+.row-menu .dropdown-menu a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    color: #1A1A1A;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.row-menu .dropdown-menu a:hover {
+    background: #F5F5F5;
+}
+
+.row-menu .dropdown-menu a.delete {
+    color: #EF4444;
+}
+
+.row-menu .dropdown-menu a.delete:hover {
+    background: #FEE2E2;
 }
 
 /* Empty State */

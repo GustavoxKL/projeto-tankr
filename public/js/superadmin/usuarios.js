@@ -68,6 +68,33 @@ document.addEventListener('click', function(e) {
 });
 
 
+// ==================== MENU DROPDOWN DAS LINHAS ====================
+
+function toggleMenuUsuario(usuarioId) {
+    // Fechar todos os menus
+    document.querySelectorAll('.row-menu .dropdown-menu').forEach(menu => {
+        if (menu.id !== `menu-usuario-${usuarioId}`) {
+            menu.classList.remove('show');
+        }
+    });
+    
+    // Toggle do menu clicado
+    const menu = document.getElementById(`menu-usuario-${usuarioId}`);
+    if (menu) {
+        menu.classList.toggle('show');
+    }
+}
+
+// Fechar menus ao clicar fora
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.row-menu')) {
+        document.querySelectorAll('.row-menu .dropdown-menu').forEach(menu => {
+            menu.classList.remove('show');
+        });
+    }
+});
+
+
 // Modal
 
 function abrirModalUsuario(usuarioId = null) {
