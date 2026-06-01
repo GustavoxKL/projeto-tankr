@@ -32,167 +32,155 @@
 
         <!-- Page Content -->
         <div class="page-content">
-            <div class="empresas-container">
-                <!-- Header -->
+            <div class="motoristas-container">
+                <!-- Header com botão adicionar -->
                 <div class="page-header">
                     <div class="header-info">
-                        <p class="section-subtitle">Gerencie as empresas do sistema</p>
+                        <p class="section-subtitle">Gerencie os motoristas do sistema</p>
                     </div>
-
+                    
                     <div class="header-actions">
+                        <!-- Campo de busca -->
                         <div class="search-box">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                             </svg>
                             <input 
                                 type="text" 
-                                id="searchEmpresa" 
-                                placeholder="Pesquisar empresa..." 
-                                oninput="filtrarEmpresas()"
-                            > 
+                                id="searchMotorista" 
+                                placeholder="Pesquisar motorista..." 
+                                oninput="filtrarMotoristas()"
+                            >
                             <button class="btn-clear-search" id="btnClearSearch" onclick="limparBusca()" style="display: none;">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                                 </svg>
                             </button>
                         </div>
-
-                        <button class="btn-add-empresa" onclick="abrirModalEmpresa()">
+                        
+                        <button class="btn-add-motorista" onclick="abrirModalMotorista()">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                             </svg>
-                            Adicionar Empresa
+                            Adicionar Motorista
                         </button>
                     </div>
                 </div>
 
                 <!-- Grid de Cards -->
-                <div class="empresas-grid">
-                    @forelse($empresas as $empresa)
-                    <div class="empresa-card" data-nome="{{ strtolower($empresa->NomeEmpresa) }}" data-cnpj="{{ $empresa->CNPJ }}">
+                <div class="motoristas-grid">
+                    @forelse($motoristas as $motorista)
+                    <div class="motorista-card" 
+                        data-nome="{{ strtolower($motorista->NomeMot) }}"
+                        data-cnh="{{ $motorista->CNHMotorista ?? '' }}"
+                        data-cpf="{{ $motorista->CPF ?? '' }}"
+                        data-empresa="{{ strtolower($motorista->empresa->NomeEmpresa ?? '') }}">
+    
                         <!-- Header do Card -->
                         <div class="card-header">
-                            <div class="empresa-header-left">
-                                <div class="empresa-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2">
-                                        <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18"/>
-                                        <path d="M6 12H4a2 2 0 0 0-2 2v8h20v-8a2 2 0 0 0-2-2h-2"/>
-                                        <path d="M10 6h4"/>
-                                        <path d="M10 10h4"/>
-                                        <path d="M10 14h4"/>
-                                        <path d="M10 18h4"/>
+                            <div class="motorista-header-left">
+                                <div class="motorista-avatar">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                                     </svg>
                                 </div>
-                                <div class="empresa-info-header">
-                                    <h3 class="empresa-nome">{{ $empresa->NomeEmpresa }}</h3>
-                                    <p class="empresa-cnpj">CNPJ: {{ $empresa->CNPJ }}</p>
+
+                                <div class="motorista-info-header">
+                                    <h3 class="motorista-nome">{{ $motorista->NomeMot }}</h3>
+                                    <p class="motorista-cnh">CNH: {{ $motorista->CNHMotorista ?? 'Não informado' }}</p>
                                 </div>
                             </div>
-                            
+        
                             <div class="card-menu">
-                                <button class="btn-menu" onclick="toggleMenu({{ $empresa->ID_EMPRESA }})">
+                                <button class="btn-menu" onclick="toggleMenu({{ $motorista->ID_MOTORISTA }})">
                                     <svg viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
                                     </svg>
                                 </button>
-                                <div class="dropdown-menu" id="menu-{{ $empresa->ID_EMPRESA }}">
-                                    <a href="#" onclick="event.preventDefault(); editarEmpresa({{ $empresa->ID_EMPRESA }})">Editar</a>
-                                    <a href="#" onclick="event.preventDefault(); excluirEmpresa({{ $empresa->ID_EMPRESA }})" class="delete">Excluir</a>
+
+                                <div class="dropdown-menu" id="menu-{{ $motorista->ID_MOTORISTA }}">
+                                    <a href="#" onclick="event.preventDefault(); editarMotorista({{ $motorista->ID_MOTORISTA }})">
+                                        Editar
+                                    </a>
+
+                                    <a href="#" onclick="event.preventDefault(); excluirMotorista({{ $motorista->ID_MOTORISTA }})" class="delete">
+                                        Excluir
+                                    </a>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Localização -->
-                        <div class="empresa-location">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                            <span>{{ $empresa->EnderecoEmpresa ?? 'Endereço não informado' }}</span>
-                        </div>
-
-                        <!-- Telefone -->
-                        <div class="empresa-telefone">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                            </svg>
-                            <span>{{ $empresa->TelefoneEmpresa ?? 'Telefone não informado' }}</span>
-                        </div>
-
-                        <!-- Estatísticas -->
-                        <div class="empresa-stats">
-                            <div class="stat-item">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                                    <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/>
-                                    <path d="M15 18H9"/>
-                                    <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14"/>
-                                    <circle cx="7" cy="18" r="2"/>
-                                    <circle cx="17" cy="18" r="2"/>
-                                </svg>
-                                <div class="stat-info">
-                                    <span class="stat-label">Veículos</span>
-                                    <span class="stat-value">{{ $empresa->veiculos_count ?? 0 }}</span>
-                                </div>
-                            </div>
-
-                            <div class="stat-item">
+                        <!-- Informações -->
+                        <div class="motorista-info">
+                            <div class="info-item">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                                 </svg>
-                                <div class="stat-info">
-                                    <span class="stat-label">Motoristas</span>
-                                    <span class="stat-value">{{ $empresa->motoristas_count ?? 0 }}</span>
-                                </div>
+                                <span>{{ $motorista->TelefoneMot ?? 'Não informado' }}</span>
+                            </div>
+
+                            <div class="info-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0"/>
+                                </svg>
+                                <span>CPF: {{ $motorista->CPF ?? 'Não informado' }}</span>
+                            </div>
+
+                            <div class="info-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                                </svg>
+                                <span>{{ $motorista->empresa->NomeEmpresa ?? 'Sem empresa' }}</span>
                             </div>
                         </div>
 
-                        <!-- Combustível/mês -->
-                        <div class="empresa-fuel">
-                            <span class="fuel-label">Combustível/mês:</span>
-                            <span class="fuel-value">R$ {{ number_format(rand(50000, 300000), 2, ',', '.') }}</span>
-                        </div>
-
-                        <!-- Status Badge -->
-                        <div class="empresa-status">
-                            <span class="status-badge status-{{ $empresa->StatusEmpresa ? 'ativa' : 'inativa' }}">
-                                {{ $empresa->StatusEmpresa ? 'Ativa' : 'Inativa' }}
+                        <!-- Status -->
+                        <div class="motorista-status">
+                            <span class="status-badge status-{{ $motorista->StatusMotorista ? 'ativo' : 'inativo' }}">
+                                {{ $motorista->StatusMotorista ? 'Ativo' : 'Inativo' }}
                             </span>
                         </div>
                     </div>
                     @empty
                     <div class="empty-state">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                         </svg>
-                        <h3>Nenhuma empresa cadastrada</h3>
+                        <h3>Nenhum motorista cadastrado</h3>
+                        <p>Clique no botão "Adicionar Motorista" para começar</p>
                     </div>
                     @endforelse
                 </div>
             </div>
 
-            <!-- Modal Adicionar/Editar Empresa -->
-            <div class="modal" id="modalEmpresa">
+            <!-- Modal Adicionar/Editar Motorista -->
+            <div class="modal" id="modalMotorista">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 id="modalTitle">Adicionar Empresa</h3>
-                        <button class="btn-close" onclick="fecharModalEmpresa()">
+                        <h3 id="modalTitle">Adicionar Motorista</h3>
+                        <button class="btn-close" onclick="fecharModalMotorista()">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                             </svg>
                         </button>
                     </div>
-                    <form id="formEmpresa" method="POST">
+                    <form id="formMotorista" method="POST">
                         @csrf
-                        <input type="hidden" id="empresaId" name="id">
+                        <input type="hidden" id="motoristaId" name="id">
                         
                         <div class="form-group">
-                            <label for="nome">Nome da Empresa *</label>
+                            <label for="nome">Nome Completo *</label>
                             <input type="text" id="nome" name="nome" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="cnpj">CNPJ *</label>
-                            <input type="text" id="cnpj" name="cnpj" required>
+                            <label for="cpf">CPF *</label>
+                            <input type="text" id="cpf" name="cpf" required maxlength="14">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cnh">CNH *</label>
+                            <input type="text" id="cnh" name="cnh" required maxlength="11">
                         </div>
 
                         <div class="form-group">
@@ -201,20 +189,52 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="endereco">Endereço</label>
-                            <input type="text" id="endereco" name="endereco">
+                            <label for="empresa_search">Empresa *</label>
+                            <div class="custom-select" id="customSelectEmpresa">
+                                <input 
+                                    type="text" 
+                                    id="empresa_search" 
+                                    placeholder="Digite para pesquisar empresa..." 
+                                    autocomplete="off"
+                                    onfocus="abrirDropdownEmpresa()"
+                                    oninput="filtrarEmpresas()"
+                                    required
+                                >
+                                <input type="hidden" id="empresa_id" name="empresa_id">
+        
+                                <div class="custom-select-arrow">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </div>
+        
+                                <div class="custom-select-dropdown" id="dropdownEmpresas">
+                                    @foreach($empresas as $empresa)
+                                        <div class="custom-select-option" 
+                                            data-id="{{ $empresa->ID_EMPRESA }}" 
+                                            data-nome="{{ strtolower($empresa->NomeEmpresa) }}"
+                                            onclick="selecionarEmpresa({{ $empresa->ID_EMPRESA }}, '{{ $empresa->NomeEmpresa }}')">
+                                                {{ $empresa->NomeEmpresa }}
+                                        </div>
+                                    @endforeach
+                                    <div class="custom-select-no-results" id="noResultsEmpresa" style="display: none;">
+                                        Nenhuma empresa encontrada
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="form-group">
+                        <!-- Campo Status: visível apenas na edição -->
+                        <div class="form-group" id="statusGroup" style="display: none;">
                             <label for="status">Status *</label>
-                            <select id="status" name="status" required>
-                                <option value="1">Ativa</option>
-                                <option value="0">Inativa</option>
+                            <select id="status" name="status">
+                                <option value="1">Ativo</option>
+                                <option value="0">Inativo</option>
                             </select>
                         </div>
 
                         <div class="modal-actions">
-                            <button type="button" class="btn-cancel" onclick="fecharModalEmpresa()">Cancelar</button>
+                            <button type="button" class="btn-cancel" onclick="fecharModalMotorista()">Cancelar</button>
                             <button type="submit" class="btn-save">Salvar</button>
                         </div>
                     </form>
