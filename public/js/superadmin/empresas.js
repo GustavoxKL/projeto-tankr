@@ -64,8 +64,8 @@ async function carregarDadosEmpresa(id) {
             // Preencher formulário
             document.getElementById('empresaId').value = empresa.ID_EMPRESA;
             document.getElementById('nome').value = empresa.NomeEmpresa || '';
-            document.getElementById('cnpj').value = empresa.CNPJ || '';
-            document.getElementById('telefone').value = empresa.TelefoneEmpresa || '';
+            document.getElementById('cnpj').value = formatarCNPJ(empresa.CNPJ || '') ;
+            document.getElementById('telefone').value = formatarTelefone(empresa.TelefoneEmpresa || '');
             document.getElementById('endereco').value = empresa.EnderecoEmpresa || '';
             document.getElementById('status').value = empresa.StatusEmpresa ? '1' : '0';
         }

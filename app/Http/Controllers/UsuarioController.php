@@ -27,16 +27,23 @@ class UsuarioController extends Controller
     public function store(Request $request)
     {
         try {
+
+            if ($request->has('TelefoneUser')) {
+                $request->merge([
+                    'TelefoneUser' => preg_replace('/\D/', '', $request->TelefoneUser)
+                ]);
+            }
+
             $data = $request->validate([
                 'NomeUser' => 'required|string|max:100',
                 'EnderecoUser' => 'nullable|string|max:200',
-                'TelefoneUser' => 'nullable|string|max:15',
+                'TelefoneUser' => 'nullable|string|max:11',
                 'email' => 'required|email|unique:usuario,email',
                 'password' => 'required|min:6',
                 'TipoUser' => 'required|in:superadmin,admin,user',
                 'FK_EMPRESA_ID_EMPRESA' => 'nullable|integer|exists:empresa,ID_EMPRESA'
             ]);
-            
+
             $data['password'] = Hash::make($data['password']);
             $data['StatusUser'] = 1;
             $data['DataCadastroUser'] = now();
@@ -52,11 +59,17 @@ class UsuarioController extends Controller
 
     // Atualizar/Editar
     public function update(Request $request, Usuario $usuario)
-    {
+    {   
+        if ($request->has('TelefoneEmpresa')) {
+            $request->merge([
+                'TelefoneEmpresa' => preg_replace('/\D/', '', $request->TelefoneEmpresa)
+            ]);
+        }
+        
         $validated = $request->validate([
             'NomeUser' => 'sometimes|required|string|max:100',
             'EnderecoUser' => 'sometimes|nullable|string|max:200',
-            'TelefoneUser' => 'sometimes|nullable|string|max:15',
+            'TelefoneUser' => 'sometimes|nullable|string|max:11',
             'StatusUser' => 'sometimes|boolean',
             'email' => 'sometimes|required|email|unique:usuario,email,' . $usuario->ID_USER . ',ID_USER',
             'password' => 'sometimes|nullable|string|min:6',

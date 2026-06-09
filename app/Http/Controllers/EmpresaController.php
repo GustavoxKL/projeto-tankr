@@ -25,13 +25,21 @@ class EmpresaController extends Controller
     public function store(Request $request)
     {
         try {
+
+            if ($request->has('TelefoneEmpresa')) {
+                $request->merge([
+                    'TelefoneEmpresa' => preg_replace('/\D/', '', $request->TelefoneEmpresa)
+                ]);
+            }
+
             $data = $request->validate([
                 'NomeEmpresa' => 'required|string|max:100',
                 'CNPJ' => 'required|string|max:18|unique:empresa,CNPJ',
-                'TelefoneEmpresa' => 'nullable|string|max:20',
+                'TelefoneEmpresa' => 'nullable|string|max:11',
                 'EnderecoEmpresa' => 'nullable|string|max:200'
             ]);
 
+            
             
             $data['StatusEmpresa'] = 1;
             $data['DataCadastroEmpresa'] = now();
@@ -47,23 +55,29 @@ class EmpresaController extends Controller
 
     // Atualizar/Editar
     public function update(Request $request, Empresa $empresa)
-    {
+    {   
+        if ($request->has('TelefoneEmpresa')) {
+            $request->merge([
+                'TelefoneEmpresa' => preg_replace('/\D/', '', $request->TelefoneEmpresa)
+            ]);
+        }
+
         $data = $request->validate([
             'NomeEmpresa' => 'sometimes|required|string|max:100',
             'CNPJ' => 'sometimes|required|string|max:18|unique:empresa,CNPJ,' . $empresa->ID_EMPRESA . ',ID_EMPRESA',
-            'TelefoneEmpresa' => 'sometimes|nullable|string|max:15',
+            'TelefoneEmpresa' => 'sometimes|nullable|string|max:11',
             'EnderecoEmpresa' => 'sometimes|nullable|string|max:200',
             'StatusEmpresa' => 'sometimes|boolean'
         ]);
 
-        // Garantir que é array
-        if ($data instanceof \Illuminate\Support\Collection) {
-            $data = $data->toArray();
-        }
-
         // Converter StatusEmpresa para boolean (0 ou 1)
         if (isset($data['StatusEmpresa'])) {
             $data['StatusEmpresa'] = ($data['StatusEmpresa'] == 1 || $data['StatusEmpresa'] === true) ? 1 : 0;
+        }
+
+        // Garantir que é array
+        if ($data instanceof \Illuminate\Support\Collection) {
+            $data = $data->toArray();
         }
 
         // Remover apenas strings vazias (mantém null)

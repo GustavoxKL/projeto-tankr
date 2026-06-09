@@ -18,7 +18,7 @@ class VeiculoController extends Controller
     // Buscar
     public function show(Veiculo $veiculo)
     {
-        return $veiculo;
+        return $veiculo->load('empresa');
     }
 
     // Criar

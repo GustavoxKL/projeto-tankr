@@ -136,7 +136,7 @@ async function carregarDadosMotorista(id) {
             document.getElementById('motoristaId').value = motorista.ID_MOTORISTA;
             document.getElementById('nome').value = motorista.NomeMot || '';
             document.getElementById('cnh').value = motorista.CNHMot || '';
-            document.getElementById('telefone').value = motorista.TelefoneMot || '';
+            document.getElementById('telefone').value = formatarTelefone(motorista.TelefoneMot || '');
             document.getElementById('status').value = motorista.StatusMot ? '1' : '0';
             
             // Preencher empresa
