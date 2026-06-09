@@ -133,16 +133,14 @@
     background: #FFFFFF;
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    border: 1px solid #E5E5E5;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     position: relative;
 }
 
 .veiculo-card:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-    transform: translateY(-2px);
-    border-color: #FFC107;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transform: translateY(-4px);
 }
 
 /* Card Header */
@@ -152,7 +150,7 @@
     align-items: flex-start;
     margin-bottom: 16px;
     padding-bottom: 16px;
-    border-bottom: 1px solid #F3F4F6;
+    border-bottom: 1px solid #E0E0E0;
 }
 
 .veiculo-header-left {
@@ -300,8 +298,8 @@
 /* Info Extra (Consumo, Último abast., KM) */
 .veiculo-info-extra {
     padding: 12px 0;
-    border-top: 1px solid #F3F4F6;
-    border-bottom: 1px solid #F3F4F6;
+    border-top: 1px solid #E0E0E0;
+    border-bottom: 1px solid #E0E0E0;
     margin-bottom: 16px;
 }
 
@@ -351,8 +349,8 @@
 
 /* Status */
 .veiculo-status {
-    padding-top: 12px;
-    border-top: 1px solid #F3F4F6;
+    padding-top: 16px;
+    border-top: 1px solid #E0E0E0;
 }
 
 .status-badge {

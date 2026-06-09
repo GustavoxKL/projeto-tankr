@@ -126,6 +126,8 @@ async function carregarDadosMotorista(id) {
         });
         
         const motorista = await response.json();
+
+        console.log('📥 Dados do motorista:', motorista);
         
         if (motorista) {
             motoristaEditando = id;
@@ -133,10 +135,9 @@ async function carregarDadosMotorista(id) {
             // Preencher formulário
             document.getElementById('motoristaId').value = motorista.ID_MOTORISTA;
             document.getElementById('nome').value = motorista.NomeMot || '';
-            document.getElementById('cpf').value = motorista.CPF || '';
-            document.getElementById('cnh').value = motorista.CNHMotorista || '';
+            document.getElementById('cnh').value = motorista.CNHMot || '';
             document.getElementById('telefone').value = motorista.TelefoneMot || '';
-            document.getElementById('status').value = motorista.StatusMotorista ? '1' : '0';
+            document.getElementById('status').value = motorista.StatusMot ? '1' : '0';
             
             // Preencher empresa
             if (motorista.FK_EMPRESA_ID_EMPRESA && motorista.empresa) {
@@ -167,16 +168,15 @@ document.getElementById('formMotorista').addEventListener('submit', async functi
     
     // Montar objeto com dados
     const formData = {
-        NomeMotorista: document.getElementById('nome').value,
-        CPFMotorista: document.getElementById('cpf').value,
-        CNHMotorista: document.getElementById('cnh').value,
-        TelefoneMotorista: document.getElementById('telefone').value || null,
+        NomeMot: document.getElementById('nome').value,
+        CNHMot: document.getElementById('cnh').value,
+        TelefoneMot: document.getElementById('telefone').value || null,
         FK_EMPRESA_ID_EMPRESA: parseInt(empresaId)
     };
     
     // Adicionar Status APENAS se for edição
     if (motoristaId) {
-        formData.StatusMotorista = document.getElementById('status').value === '1' ? 1 : 0;
+        formData.StatusMot = document.getElementById('status').value === '1' ? 1 : 0;
     }
     
     console.log('📤 Enviando dados:', formData);
@@ -294,19 +294,6 @@ async function excluirMotorista(id) {
 
 // ==================== MÁSCARAS ====================
 
-// Máscara de CPF
-document.getElementById('cpf').addEventListener('input', function(e) {
-    let value = e.target.value.replace(/\D/g, '');
-    
-    if (value.length <= 11) {
-        value = value.replace(/^(\d{3})(\d)/, '$1.$2');
-        value = value.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
-        value = value.replace(/\.(\d{3})(\d)/, '.$1-$2');
-    }
-    
-    e.target.value = value;
-});
-
 // Máscara de CNH (apenas números)
 document.getElementById('cnh').addEventListener('input', function(e) {
     let value = e.target.value.replace(/\D/g, '');
@@ -339,16 +326,6 @@ document.getElementById('telefone').addEventListener('input', function(e) {
 
 // ==================== VALIDAÇÕES ====================
 
-// Validar CPF (apenas tamanho)
-document.getElementById('cpf').addEventListener('blur', function(e) {
-    const cpf = e.target.value.replace(/\D/g, '');
-    
-    if (cpf.length > 0 && cpf.length !== 11) {
-        alert('⚠️ CPF deve ter 11 dígitos');
-        e.target.focus();
-    }
-});
-
 // Validar CNH (apenas tamanho)
 document.getElementById('cnh').addEventListener('blur', function(e) {
     const cnh = e.target.value.replace(/\D/g, '');
@@ -376,13 +353,11 @@ function filtrarMotoristas() {
     cards.forEach(card => {
         const nome = card.getAttribute('data-nome') || '';
         const cnh = card.getAttribute('data-cnh') || '';
-        const cpf = card.getAttribute('data-cpf') || '';
         const empresa = card.getAttribute('data-empresa') || '';
         
         if (
             nome.includes(filtro) || 
-            cnh.includes(filtro) || 
-            cpf.includes(filtro) ||
+            cnh.includes(filtro) ||
             empresa.includes(filtro)
         ) {
             card.style.display = 'block';

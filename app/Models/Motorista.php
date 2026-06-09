@@ -22,10 +22,9 @@ class Motorista extends Model
 
     public $fillable = [
         'NomeMot', 
-        'CPF',
+        'CNHMot',
         'TelefoneMot',
-        'EmailMot',
-        'SenhaMot',
+        'StatusMot',
         'DataCadastroMot',
         'FK_EMPRESA_ID_EMPRESA'
     ];

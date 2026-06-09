@@ -20,7 +20,7 @@ class MotoristaController extends Controller
     // Buscar
     public function show(Motorista $motorista)
     {
-        return $motorista;
+        return $motorista->load('empresa');
     }
 
     // Criar
@@ -29,15 +29,13 @@ class MotoristaController extends Controller
         try {
             $data =$request->validate([
                 'NomeMot' => 'required|string|max:100',
-                'CPF' => 'required|string|max:14',
+                'CNHMot' => 'nullable|string|max:11',
                 'TelefoneMot' => 'nullable|string|max:15',
-                'EmailMot' => 'required|email|unique:motorista,EmailMot',
-                'SenhaMot' => 'required|min:6',
-                'FK_EMPRESA_ID_EMPRESA' => 'required|integer'
+                'FK_EMPRESA_ID_EMPRESA' => 'required|integer|exists:empresa,ID_EMPRESA'
             ]);
 
-            $data['SenhaMot'] = Hash::make($data['SenhaMot']);
             $data['DataCadastroMot'] = now();
+            $data['StatusMot'] = 1;
 
             Motorista::create($data);
 
@@ -51,20 +49,27 @@ class MotoristaController extends Controller
     // Atualizar/Editar
     public function update(Request $request, Motorista $motorista)
     {
-        $data = collect($request->validate([
-            'NomeMot' => 'nullable|string|max:100',
-            'CPF' => 'nullable|string|max:14',
-            'TelefoneMot' => 'nullable|string|max:15',
-            'EmailMot' => 'nullable|email|unique:motorista,EmailMot' . $motorista->ID_MOTORISTA . ',ID_MOTORISTA',
-            'SenhaMot' => 'nullable|min:6',
-            'FK_EMPRESA_ID_EMPRESA' => 'nullable|integer'
-        ]))
-        ->filter(fn($value) => !is_null($value) && $value !== '')
-        ->toArray();
-
-        if (isset($data['SenhaMot'])) {
-            $data['SenhaMot'] = Hash::make($data['SenhaMot']);
+        $data = $request->validate([
+            'NomeMot' => 'sometimes|required|string|max:100',
+            'CNHMot' => 'sometimes|nullable|string|max:11',
+            'TelefoneMot' => 'sometimes|nullable|string|max:15',
+            'StatusMot' => 'sometimes|boolean',
+            'FK_EMPRESA_ID_EMPRESA' => 'sometimes|required|exists:empresa,ID_EMPRESA'
+        ]);
+        
+        // Garantir que é array
+        if ($data instanceof \Illuminate\Support\Collection) {
+            $data = $data->toArray();
         }
+
+        // Converter StatusMot para boolean (0 ou 1)
+        if (isset($data['StatusMot'])) {
+            $data['StatusMot'] = ($data['StatusMot'] == 1 || $data['StatusMot'] === true) ? 1 : 0;
+        }
+
+        // Remover apenas strings vazias (mantém null)
+        $data = array_filter($data, fn($value) => $value !== '');
+
 
         $motorista->update($data);
 

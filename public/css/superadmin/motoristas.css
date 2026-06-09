@@ -133,16 +133,14 @@
     background: #FFFFFF;
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    border: 1px solid #E5E5E5;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     position: relative;
 }
 
 .motorista-card:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-    transform: translateY(-2px);
-    border-color: #FFC107;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transform: translateY(-4px);
 }
 
 /* Card Header */
@@ -150,7 +148,9 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #E0E0E0;
 }
 
 .motorista-header-left {
@@ -299,7 +299,7 @@
 /* Status */
 .motorista-status {
     padding-top: 16px;
-    border-top: 1px solid #F3F4F6;
+    border-top: 1px solid #E0E0E0;
 }
 
 .status-badge {

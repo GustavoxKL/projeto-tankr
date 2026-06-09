@@ -72,8 +72,7 @@
                     @forelse($motoristas as $motorista)
                     <div class="motorista-card" 
                         data-nome="{{ strtolower($motorista->NomeMot) }}"
-                        data-cnh="{{ $motorista->CNHMotorista ?? '' }}"
-                        data-cpf="{{ $motorista->CPF ?? '' }}"
+                        data-cnh="{{ $motorista->CNHMot ?? '' }}"
                         data-empresa="{{ strtolower($motorista->empresa->NomeEmpresa ?? '') }}">
     
                         <!-- Header do Card -->
@@ -87,7 +86,13 @@
 
                                 <div class="motorista-info-header">
                                     <h3 class="motorista-nome">{{ $motorista->NomeMot }}</h3>
-                                    <p class="motorista-cnh">CNH: {{ $motorista->CNHMotorista ?? 'Não informado' }}</p>
+                                    <p class="motorista-cnh">
+                                        @if($motorista->CNHMot)
+                                            CNH: {{ $motorista->CNHMot }}
+                                        @else
+                                            <span class="cnh-empty">CNH não informada</span>
+                                        @endif
+                                    </p>
                                 </div>
                             </div>
         
@@ -121,13 +126,6 @@
 
                             <div class="info-item">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0"/>
-                                </svg>
-                                <span>CPF: {{ $motorista->CPF ?? 'Não informado' }}</span>
-                            </div>
-
-                            <div class="info-item">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                                 </svg>
                                 <span>{{ $motorista->empresa->NomeEmpresa ?? 'Sem empresa' }}</span>
@@ -136,8 +134,8 @@
 
                         <!-- Status -->
                         <div class="motorista-status">
-                            <span class="status-badge status-{{ $motorista->StatusMotorista ? 'ativo' : 'inativo' }}">
-                                {{ $motorista->StatusMotorista ? 'Ativo' : 'Inativo' }}
+                            <span class="status-badge status-{{ $motorista->StatusMot ? 'ativo' : 'inativo' }}">
+                                {{ $motorista->StatusMot ? 'Ativo' : 'Inativo' }}
                             </span>
                         </div>
                     </div>
@@ -174,13 +172,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="cpf">CPF *</label>
-                            <input type="text" id="cpf" name="cpf" required maxlength="14">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="cnh">CNH *</label>
-                            <input type="text" id="cnh" name="cnh" required maxlength="11">
+                            <label for="cnh">CNH</label>
+                            <input type="text" id="cnh" name="cnh" maxlength="11">
                         </div>
 
                         <div class="form-group">
