@@ -14,7 +14,6 @@ Route::post('/login', [AuthController::class, 'loginWeb'])->name('login.web');
 
 Route::middleware(['auth'])->group(function() {
 
-
     // Rotas Admin
     Route::get('/dashboard-admin', function () {
         return view('dashboard_admin');
@@ -34,6 +33,7 @@ Route::middleware(['auth'])->group(function() {
         ->name('admin.abastecimentos.index');
     */
 
+        
     // Rotas SuperAdmin
     Route::get('/dashboard-superadmin', function () {
         return view('dashboard_superadmin');
@@ -51,8 +51,10 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/superadmin/veiculos', [App\Http\Controllers\SuperAdmin\VeiculoViewController::class, 'index'])
         ->name('superadmin.veiculos.index');
 
-    Route::get('/superadmin/abastecimentos', [App\Http\Controllers\SuperAdmin\EmpresaViewController::class, 'index'])
-        ->name('superadmin.abastecimentos.index');
+    Route::get('/superadmin/estacoes', [App\Http\Controllers\SuperAdmin\EstacaoViewController::class, 'index'])
+        ->name('superadmin.estacoes.index');
+
+    //Route::get('/superadmin/abastecimentos', [App\Http\Controllers\SuperAdmin\EmpresaViewController::class, 'index'])->name('superadmin.abastecimentos.index');
     
     
     Route::post('/logout', [AuthController::class, 'logoutWeb'])->name('logout.web');

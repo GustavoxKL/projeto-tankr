@@ -12,13 +12,13 @@ class EstacaoAbastecimentoController extends Controller
     // Listar
     public function index()
     {
-        return EstacaoAbastecimento::all();
+        return EstacaoAbastecimento::with('empresa')->get();
     }
 
     // Buscar
     public function show(EstacaoAbastecimento $estacao)
     {
-        return $estacao;
+        return $estacao->load('empresa');
     }
 
     // Criar
@@ -26,9 +26,9 @@ class EstacaoAbastecimentoController extends Controller
     {
         try {
             $data = $request->validate([
-                'EnderecoEst' => 'required|string|max:100',
-                'Token' => 'required|integer', 
-                'FK_EMPRESA_ID_EMPRESA' => 'required|integer'
+                'Token' => 'required|string|max:20|unique:estacaoabastecimento,Token',
+                'EnderecoEst' => 'nullable|string|max:100',
+                'FK_EMPRESA_ID_EMPRESA' => 'required|integer|exists:empresa,ID_EMPRESA'
             ]);
 
             EstacaoAbastecimento::create($data);
@@ -46,8 +46,8 @@ class EstacaoAbastecimentoController extends Controller
     {
 
         $data = collect($request->validate([
-            'EnderecoEst' => 'sometimes|string|max:100',
-            'Token' => 'sometimes|integer',
+            'Token' => 'sometimes|required|string|max:20|unique:estacaoabastecimento,Token,' . $estacao->ID_ESTACAO . ',ID_ESTACAO',
+            'EnderecoEst' => 'sometimes|nullable|string|max:200',
             'FK_EMPRESA_ID_EMPRESA' => 'sometimes|integer'
         ]))
         ->filter(fn($value) => !is_null($value) && $value !== '')

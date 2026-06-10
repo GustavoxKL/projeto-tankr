@@ -56,7 +56,7 @@
             <span>Veículos</span>
         </a>
 
-        <a href="{{ route('superadmin.abastecimentos.index') }}" class="nav-item {{ request()->routeIs('abastecimentos.*') ? 'active' : '' }}">
+        <a href="{{ route('superadmin.estacoes.index') }}" class="nav-item {{ request()->routeIs('abastecimentos.*') ? 'active' : '' }}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                 <path d="M3 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18"/>
                 <path d="M3 22h12"/>
@@ -65,7 +65,7 @@
                 <path d="M7 6h4"/>
                 <path d="M7 10h4"/>
             </svg>
-            <span>Abastecimentos</span>
+            <span>Estações</span>
         </a>
     </nav>
 
