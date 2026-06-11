@@ -19,7 +19,7 @@ class AuthController extends Controller
         return view('login');
     }
 
-    // Login API - POST
+    // Login API
     public function login(Request $request)
     {   
         if (Auth::attempt($request->only('email', 'password'))) {
@@ -31,7 +31,7 @@ class AuthController extends Controller
         return $this->error(null, 'Não Autorizado', 403);
     }
 
-    // Logout API - POST
+    // Logout API 
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
@@ -40,7 +40,7 @@ class AuthController extends Controller
     }
    
 
-    // Login Web
+    // Login WEB
     public function loginWeb(Request $request)
     {
         $credentials = $request->validate([
@@ -71,11 +71,11 @@ class AuthController extends Controller
         ]);
 
         if ($user->TipoUser === 'admin') {
-            return redirect()->route('dashboard.admin');
+            return redirect()->route('admin.dashboard.index');
         }
 
         if ($user->TipoUser === 'superadmin') {
-            return redirect()->route('dashboard.superadmin');
+            return redirect()->route('superadmin.dashboard.index');
         }
 
         // Se não for admin nem superadmin
@@ -89,7 +89,7 @@ class AuthController extends Controller
         ]);
     }
 
-    // Logout Web
+    // Logout WEB
     public function logoutWeb(Request $request)
     {
         $token = session('api_token');

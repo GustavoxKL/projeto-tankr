@@ -1,9 +1,7 @@
-  document.getElementById('loginForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
+document.getElementById('loginForm').addEventListener('submit', (e) => {
+  const btnLogin = document.getElementById('btnLogin');
 
-    const btnLogin = document.getElementById('btnLogin');
-
-    // Desabilita botão e mostra loading
-    btnLogin.disabled = true;
-    btnLogin.innerHTML = '<span class="loading"></span> Entrando...';
+  btnLogin.disabled = true;
+  btnLogin.innerHTML = '<span class="loading"></span> Entrando...';
 });
+

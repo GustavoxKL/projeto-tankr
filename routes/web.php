@@ -15,9 +15,9 @@ Route::post('/login', [AuthController::class, 'loginWeb'])->name('login.web');
 Route::middleware(['auth'])->group(function() {
 
     // Rotas Admin
-    Route::get('/dashboard-admin', function () {
+    Route::get('/admin/dashboard', function () {
         return view('dashboard_admin');
-    })->name('dashboard.admin');
+    })->name('admin.dashboard.index');
     
     /** 
     Route::get('/admin/usuarios', [App\Http\Controllers\SuperAdmin\EmpresaViewController::class, 'index'])
@@ -35,9 +35,9 @@ Route::middleware(['auth'])->group(function() {
 
         
     // Rotas SuperAdmin
-    Route::get('/dashboard-superadmin', function () {
+    Route::get('/superadmin/dashboard', function () {
         return view('dashboard_superadmin');
-    })->name('dashboard.superadmin');
+    })->name('superadmin.dashboard.index');
 
     Route::get('/superadmin/empresas', [App\Http\Controllers\SuperAdmin\EmpresaViewController::class, 'index'])
         ->name('superadmin.empresas.index');
@@ -54,7 +54,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/superadmin/estacoes', [App\Http\Controllers\SuperAdmin\EstacaoViewController::class, 'index'])
         ->name('superadmin.estacoes.index');
 
-    //Route::get('/superadmin/abastecimentos', [App\Http\Controllers\SuperAdmin\EmpresaViewController::class, 'index'])->name('superadmin.abastecimentos.index');
+    //Route::get('/superadmin/abastecimentos', [App\Http\Controllers\SuperAdmin\AbastecimentoViewController::class, 'index'])->name('superadmin.abastecimentos.index');
     
     
     Route::post('/logout', [AuthController::class, 'logoutWeb'])->name('logout.web');

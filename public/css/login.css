@@ -25,16 +25,15 @@ body {
     padding: 20px;
 }
 
-
-/* ==================== CONTAINER ==================== */
+/* Conteiner */
 
 .login-container {
     background: white;
-    padding: 50px 40px;
+    padding: 30px 40px;
     border-radius: 20px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.3);
     width: 100%;
-    max-width: 420px;
+    max-width: 450px;
     animation: slideIn 0.5s ease-out;
 }
 
@@ -47,11 +46,12 @@ body {
     to {
         opacity: 1;
         transform: translateY(0);
-        }
+    }
 }
 
 .logo {
     text-align: center;
+    align-items: center;
     margin-bottom: 40px;
 }
 
@@ -61,18 +61,24 @@ body {
     margin-bottom: 8px;
 }
 
-.logo .icon {
-    font-size: 48px;
-    margin-bottom: 10px;
-}
-
 .logo p {
     color: #6b7280;
     font-size: 14px;
 }
 
+.logo-small {
+    align-items: center;
+    text-align: center;
+}
 
-/* ==================== FORM ==================== */
+.logo-small svg {
+    width: 68px;
+    height: 68px;
+    color: var(--text-dark);
+    text-align: center;
+}
+
+/* Form */
 
 .form-group {
     margin-bottom: 25px;
@@ -121,7 +127,7 @@ body {
 }
 
 
-/* ==================== BOTÃO ==================== */
+/* Button */
 
 .btn-login {
     width: 100%;
@@ -135,6 +141,7 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+    margin-top: 20px;
 }
 
 .btn-login:hover {
@@ -151,8 +158,6 @@ body {
     opacity: 0.6;
     cursor: not-allowed;
 }
-
-
 
 
 

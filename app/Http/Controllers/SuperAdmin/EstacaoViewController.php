@@ -12,18 +12,15 @@ class EstacaoViewController extends Controller
 {
     public function index()
     {
-        // Buscar todas as estações com empresa
         $estacoes = EstacaoAbastecimento::with('empresa')
-            ->orderBy('ID_ESTACAO', 'desc')
+            ->orderBy('Token', 'asc')
             ->get();
 
-        // Buscar empresas para o select e agrupamento
         $empresas = Empresa::where('StatusEmpresa', true)
             ->withCount(['estacoes'])
             ->orderBy('NomeEmpresa', 'asc')
             ->get();
 
-        // Agrupar estações por empresa
         $estacoesAgrupadas = $estacoes->groupBy('FK_EMPRESA_ID_EMPRESA');
 
         return view('superadmin.estacoes.index', compact('estacoes', 'empresas', 'estacoesAgrupadas'));
