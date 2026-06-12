@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>TANKR - Veículos</title>
 
-    <link rel="stylesheet" href="{{ asset('css/dashboard_superadmin.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/superadmin/dashboard_superadmin.css') }}">
     <link rel="stylesheet" href="{{ asset('css/superadmin/veiculos.css') }}">
 </head>
 <body>

@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'TANKR - Dashboard')</title>
-
-    <link rel="stylesheet" href="{{ asset('css/dashboard_admin.css') }}">
+    
+    <link rel="stylesheet" href="{{ asset('css/superadmin/dashboard_superadmin.css') }}">
     @yield('styles')
 </head>
 <body>
 
     <!-- Sidebar -->
-    @include('partials.sidebar_admin')
+    @include('partials.sidebar_superadmin')
 
     <!-- Main Content -->
     <main class="main-content">
@@ -51,8 +51,8 @@
     </main>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/dashboard_admin.js') }}"></script>
+    <script src="{{ asset('js/superadmin/dashboard_superadmin.js') }}"></script>
     @yield('scripts')
-
+    
 </body>
 </html>
