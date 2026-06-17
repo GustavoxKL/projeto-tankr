@@ -58,7 +58,6 @@ class AuthController extends Controller
 
         $token = $request->user()->createToken('auth_token')->plainTextToken;
 
-
         $user = Auth::user();
 
         session([
@@ -70,11 +69,11 @@ class AuthController extends Controller
             'empresa_id' => $user->FK_EMPRESA_ID_EMPRESA
         ]);
 
-        if ($user->TipoUser === 'admin') {
+        if ($user->TipoUser === 'admin' and $user->StatusUser === 1) {
             return redirect()->route('admin.dashboard.index');
         }
 
-        if ($user->TipoUser === 'superadmin') {
+        if ($user->TipoUser === 'superadmin' and $user->StatusUser === 1) {
             return redirect()->route('superadmin.dashboard.index');
         }
 

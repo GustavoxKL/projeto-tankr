@@ -184,6 +184,16 @@ body {
     flex-direction: column;
 }
 
+.user-empresa {
+    font-size: 11px;
+    color: #FFC107;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-top: 2px;
+}
+
 
 /* Topbar */
 

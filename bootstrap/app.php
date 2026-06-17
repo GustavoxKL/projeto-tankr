@@ -12,7 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->statefulApi();
+
+        $middleware->alias([
+            'auth.superadmin' => \App\Http\Middleware\CheckSuperAdmin::class,
+            'auth.admin' => \App\Http\Middleware\CheckAdmin::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

@@ -26,7 +26,7 @@
             <span>Usuários</span>
         </a>
 
-        <a href="#" class="nav-item {{ request()->routeIs('admin.motoristas.*') ? 'active' : '' }}">
+        <a href="{{ route('admin.motoristas.index') }}" class="nav-item {{ request()->routeIs('admin.motoristas.*') ? 'active' : '' }}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                 <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
             </svg>
@@ -72,11 +72,11 @@
     <div class="sidebar-footer">
         <div class="user-info">
             <div class="user-avatar">
-                {{ substr(session('nome', 'U'), 0, 1) }}
+                {{ substr(Auth::user()->NomeUser ?? 'U', 0, 1) }}
             </div>
             <div class="user-details">
-                <span class="user-name">{{ session('nome', 'Usuário') }}</span>
-                <span class="user-role">{{ session('tipo', 'admin') }}</span>
+                <span class="user-name">{{ Auth::user()->NomeUser ?? 'Usuário' }}</span>
+                <span class="user-empresa">{{ Auth::user()->empresa->NomeEmpresa ?? 'Sem empresa' }}</span>
             </div>
         </div>
             

@@ -12,7 +12,6 @@ class MotoristaViewController extends Controller
 {
     public function index()
     {
-        
         $motoristas = Motorista::with('empresa')
             ->orderBy('ID_MOTORISTA', 'desc')
             ->get();
