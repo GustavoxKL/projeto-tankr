@@ -24,6 +24,7 @@ class Veiculo extends Model
         'PlacaVei',
         'ModeloVei',
         'AnoVei',
+        'StatusVei',
         'DataCadastroVei',
         'FK_EMPRESA_ID_EMPRESA'
     ];

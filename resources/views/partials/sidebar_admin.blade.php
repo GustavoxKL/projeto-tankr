@@ -33,7 +33,7 @@
             <span>Motoristas</span>
         </a>
 
-        <a href="#" class="nav-item {{ request()->routeIs('admin.veiculos.*') ? 'active' : '' }}">
+        <a href="{{ route('admin.veiculos.index') }}" class="nav-item {{ request()->routeIs('admin.veiculos.*') ? 'active' : '' }}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                 <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/>
                 <path d="M15 18H9"/>

@@ -6,18 +6,31 @@ use App\Models\Veiculo;
 //use App\Http\Controllers\Controller;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VeiculoController extends Controller
 {
     // Listar
     public function index()
     {
-        return Veiculo::all();
+        $query = Veiculo::with('empresa');
+
+        if (Auth::check() && Auth::user()->TipoUser === 'admin') {
+            $query->where('FK_EMPRESA_ID_EMPRESA', Auth::user()->FK_EMPRESA_ID_EMPRESA);
+        }
+
+        return $query->get();
     }
 
     // Buscar
     public function show(Veiculo $veiculo)
     {
+        if (Auth::check() && Auth::user()->TipoUser === 'admin') {
+            if ($veiculo->FK_EMPRESA_ID_EMPRESA !== Auth::user()->FK_EMPRESA_ID_EMPRESA) {
+                return response()->json(['message' => 'Acesso não autorizado'], 403);
+            }
+        }
+
         return $veiculo->load('empresa');
     }
 
@@ -25,13 +38,27 @@ class VeiculoController extends Controller
     public function store(Request $request)
     {   
         try {
+            
+            if ($request->has('PlacaVei')) {
+                $request->merge([
+                    'PlacaVei' => preg_replace('/[^A-Z0-9]/', '', strtoupper($request->PlacaVei))
+                ]);
+            }
+
+            if (Auth::check() && Auth::user()->TipoUser === 'admin') {
+                $request->merge([
+                    'FK_EMPRESA_ID_EMPRESA' => Auth::user()->FK_EMPRESA_ID_EMPRESA
+                ]);
+            }
+
             $data = $request->validate([
                 'PlacaVei' => 'required|string|max:7|unique:veiculo,PlacaVei',
                 'ModeloVei' => 'required|string|max:50',
-                'AnoVei' => 'required|integer',
-                'FK_EMPRESA_ID_EMPRESA' => 'required|integer'
+                'AnoVei' => 'required|integer|min:1900|max:' . (date('Y') + 1),
+                'FK_EMPRESA_ID_EMPRESA' => 'required|integer|exists:empresa,ID_EMPRESA'
             ]);
 
+            $data['StatusVei'] = 1;
             $data['DataCadastroVei'] = now();
 
             Veiculo::create($data);
@@ -45,16 +72,41 @@ class VeiculoController extends Controller
 
     // Atualizar/Editar
     public function update(Request $request, Veiculo $veiculo)
-    {
+    {   
+
+        if (Auth::check() && Auth::user()->TipoUser === 'admin') {
+            if ($veiculo->FK_EMPRESA_ID_EMPRESA !== Auth::user()->FK_EMPRESA_ID_EMPRESA) {
+                return response()->json(['message' => 'Acesso não autorizado'], 403);
+            }
+
+            // Admin não pode alterar a empresa
+            $request->request->remove('FK_EMPRESA_ID_EMPRESA');
+        }
+
+        // Limpar placa ANTES de validar
+        if ($request->has('PlacaVei')) {
+            $request->merge([
+                'PlacaVei' => preg_replace('/[^A-Z0-9]/', '', strtoupper($request->PlacaVei))
+            ]);
+        }
 
         $data = collect($request->validate([
-            'PlacaVei' => 'sometimes|string|max:7|unique:veiculo,PlacaVei',
-            'ModeloVei' => 'sometimes|string|max:50',
-            'AnoVei' => 'sometimes|integer',
-            'FK_EMPRESA_ID_EMPRESA' => 'sometimes|integer'
-        ]))
-        ->filter(fn($value) => !is_null($value) && $value !== '')
-        ->toArray();
+            'PlacaVei' => 'sometimes|required|string|size:7|unique:veiculo,PlacaVei,' . $veiculo->ID_VEICULO . ',ID_VEICULO',
+            'ModeloVei' => 'sometimes|required|string|max:100',
+            'AnoVei' => 'sometimes|required|integer|min:1900|max:' . (date('Y') + 1),
+            'StatusVei' => 'sometimes|boolean',
+            'FK_EMPRESA_ID_EMPRESA' => 'sometimes|integer|exists:empresa,ID_EMPRESA'
+        ]));
+
+        if ($data instanceof \Illuminate\Support\Collection) {
+            $data = $data->toArray();
+        }
+
+        if (isset($data['StatusVei'])) {
+            $data['StatusVei'] = ($data['StatusVei'] == 1 || $data['StatusVei'] === true) ? 1 : 0;
+        }
+
+        $data = array_filter($data, fn($value) => $value !== '');
 
         $veiculo->update($data);
 
@@ -67,6 +119,12 @@ class VeiculoController extends Controller
     // Deletar
     public function destroy(Veiculo $veiculo)
     {
+        if (Auth::check() && Auth::user()->TipoUser === 'admin') {
+            if ($veiculo->FK_EMPRESA_ID_EMPRESA !== Auth::user()->FK_EMPRESA_ID_EMPRESA) {
+                return response()->json(['message' => 'Acesso não autorizado'], 403);
+            }
+        }
+        
         $veiculo->delete();
         return response()->json(['message' => 'Veiculo excluido!']);
     }

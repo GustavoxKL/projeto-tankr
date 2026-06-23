@@ -130,7 +130,6 @@ async function carregarDadosVeiculo(id) {
         if (veiculo) {
             veiculoEditando = id;
             
-            // Preencher formulário
             document.getElementById('veiculoId').value = veiculo.ID_VEICULO;
             document.getElementById('modelo').value = veiculo.ModeloVei || '';
             document.getElementById('placa').value = veiculo.PlacaVei || '';
@@ -157,6 +156,7 @@ document.getElementById('formVeiculo').addEventListener('submit', async function
     
     const veiculoId = document.getElementById('veiculoId').value;
     const empresaId = document.getElementById('empresa_id').value;
+    const placa = document.getElementById('placa').value.toUpperCase();
     
     // Validar empresa
     if (!empresaId) {
@@ -164,17 +164,23 @@ document.getElementById('formVeiculo').addEventListener('submit', async function
         return;
     }
     
+    // Validar tamanho da placa
+    if (placa.length !== 7) {
+        alert('⚠️ A placa deve ter exatamente 7 caracteres');
+        return;
+    }
+    
     // Montar objeto com dados
     const formData = {
-        ModeloVeiculo: document.getElementById('modelo').value,
-        PlacaVeiculo: document.getElementById('placa').value.toUpperCase(),
-        AnoVeiculo: parseInt(document.getElementById('ano').value),
+        ModeloVei: document.getElementById('modelo').value,
+        PlacaVei: placa,
+        AnoVei: parseInt(document.getElementById('ano').value),
         FK_EMPRESA_ID_EMPRESA: parseInt(empresaId)
     };
     
     // Adicionar Status APENAS se for edição
     if (veiculoId) {
-        formData.StatusVeiculo = document.getElementById('status').value === '1' ? 1 : 0;
+        formData.StatusVei = document.getElementById('status').value === '1' ? 1 : 0;
     }
     
     console.log('📤 Enviando dados:', formData);
@@ -229,25 +235,21 @@ document.getElementById('formVeiculo').addEventListener('submit', async function
 // ==================== MENU DROPDOWN ====================
 
 function toggleMenu(veiculoId) {
-    // Fechar todos os menus
     document.querySelectorAll('.dropdown-menu').forEach(menu => {
         if (menu.id !== `menu-${veiculoId}`) {
             menu.classList.remove('show');
         }
     });
     
-    // Toggle do menu clicado
     const menu = document.getElementById(`menu-${veiculoId}`);
     if (menu) {
         menu.classList.toggle('show');
     }
 }
 
-// Fechar menus ao clicar fora
 document.addEventListener('click', function(e) {
     if (!e.target.closest('.card-menu')) {
         document.querySelectorAll('.dropdown-menu').forEach(menu => {
-            // Não fechar o dropdown do select
             if (!menu.classList.contains('custom-select-dropdown')) {
                 menu.classList.remove('show');
             }
@@ -255,13 +257,13 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// ==================== EDITAR VEÍCULO ====================
+// ==================== EDITAR ====================
 
 function editarVeiculo(id) {
     abrirModalVeiculo(id);
 }
 
-// ==================== EXCLUIR VEÍCULO ====================
+// ==================== EXCLUIR ====================
 
 async function excluirVeiculo(id) {
     if (!confirm('⚠️ Tem certeza que deseja excluir este veículo?\n\nEsta ação não pode ser desfeita!')) {
@@ -292,24 +294,37 @@ async function excluirVeiculo(id) {
 
 // ==================== MÁSCARAS E VALIDAÇÕES ====================
 
-// Máscara de Placa (ABC-1234 ou ABC1D23)
+// Máscara de Placa: só letras/números, uppercase, máximo 7 caracteres
 document.getElementById('placa').addEventListener('input', function(e) {
     let value = e.target.value.toUpperCase();
     
-    // Remove caracteres especiais
+    // Remove caracteres especiais (só letras e números)
     value = value.replace(/[^A-Z0-9]/g, '');
     
-    if (value.length <= 7) {
-        // Aplica formato ABC-1234 (placa antiga)
-        if (value.length > 3) {
-            value = value.substring(0, 3) + '-' + value.substring(3);
-        }
+    // Limita a 7 caracteres
+    if (value.length > 7) {
+        value = value.substring(0, 7);
     }
     
     e.target.value = value;
 });
 
-// Validar Ano (não pode ser maior que ano atual + 1)
+// Bloquear teclas que não sejam letras/números
+document.getElementById('placa').addEventListener('keypress', function(e) {
+    const char = String.fromCharCode(e.which);
+    const valid = /[A-Za-z0-9]/;
+    
+    if (!valid.test(char)) {
+        e.preventDefault();
+    }
+    
+    // Bloquear se já tiver 7 caracteres
+    if (e.target.value.length >= 7) {
+        e.preventDefault();
+    }
+});
+
+// Validar Ano
 document.getElementById('ano').addEventListener('blur', function(e) {
     const ano = parseInt(e.target.value);
     const anoAtual = new Date().getFullYear();
@@ -329,7 +344,6 @@ function filtrarVeiculos() {
     const btnClear = document.getElementById('btnClearSearch');
     const grid = document.querySelector('.veiculos-grid');
     
-    // Mostrar/esconder botão de limpar
     btnClear.style.display = filtro ? 'flex' : 'none';
     
     let temResultado = false;
@@ -351,13 +365,11 @@ function filtrarVeiculos() {
         }
     });
     
-    // Remover mensagem antiga
     const emptySearchAnterior = document.getElementById('empty-search-result');
     if (emptySearchAnterior) {
         emptySearchAnterior.remove();
     }
     
-    // Mostrar mensagem se não encontrou nada
     if (!temResultado && filtro) {
         const mensagem = document.createElement('div');
         mensagem.id = 'empty-search-result';
@@ -382,4 +394,4 @@ function limparBusca() {
 
 // ==================== LOG INICIAL ====================
 
-console.log('✅ veiculos.js carregado com sucesso!');
+console.log('✅ superadmin/veiculos.js carregado com sucesso!');
