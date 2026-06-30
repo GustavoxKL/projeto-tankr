@@ -79,11 +79,9 @@ class VeiculoController extends Controller
                 return response()->json(['message' => 'Acesso não autorizado'], 403);
             }
 
-            // Admin não pode alterar a empresa
             $request->request->remove('FK_EMPRESA_ID_EMPRESA');
         }
 
-        // Limpar placa ANTES de validar
         if ($request->has('PlacaVei')) {
             $request->merge([
                 'PlacaVei' => preg_replace('/[^A-Z0-9]/', '', strtoupper($request->PlacaVei))
