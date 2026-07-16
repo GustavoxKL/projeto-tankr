@@ -30,4 +30,14 @@ class EstacaoAbastecimento extends Model
     {
         return $this->belongsTo(Empresa::class, 'FK_EMPRESA_ID_EMPRESA', 'ID_EMPRESA');
     }
+
+    public function tanques()
+    {
+        return $this->belongsToMany(
+            Tanque::class,
+            'tanque_estacao',
+            'ID_ESTACAO',
+            'ID_TANQUE'
+        );
+    }
 }

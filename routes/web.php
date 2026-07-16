@@ -28,6 +28,9 @@ Route::middleware(['auth', 'auth.admin'])->prefix('admin')->name('admin.')->grou
 
     Route::get('/veiculos', [App\Http\Controllers\Admin\VeiculoViewController::class, 'index'])
         ->name('veiculos.index');
+    
+    Route::get('/frentistas', [App\Http\Controllers\Admin\FrentistaViewController::class, 'index'])
+        ->name('frentistas.index');
 
     /** 
     Route::get('/usuarios', [App\Http\Controllers\Admin\UsuarioViewController::class, 'index'])
@@ -64,4 +67,6 @@ Route::middleware(['auth', 'auth.superadmin'])->prefix('superadmin')->name('supe
         ->name('estacoes.index');
 
     //Route::get('/abastecimentos', [App\Http\Controllers\SuperAdmin\AbastecimentoViewController::class, 'index'])->name('abastecimentos.index');
+    //Route::get('/frentistas', [App\Http\Controllers\SuperAdmin\FrentistasViewController::class, 'index'])->name('frentistas.index');
+    //Route::get('/tanques', [App\Http\Controllers\SuperAdmin\TanquesViewController::class, 'index'])->name('tanques.index');
 });

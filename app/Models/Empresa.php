@@ -48,4 +48,14 @@ class Empresa extends Model
     {
         return $this->hasMany(EstacaoAbastecimento::class, 'FK_EMPRESA_ID_EMPRESA', 'ID_EMPRESA');
     }
+
+    public function frentistas()
+    {
+        return $this->hasMany(Frentista::class, 'FK_EMPRESA_ID_EMPRESA', 'ID_EMPRESA');
+    }
+
+    public function tanques()
+    {
+        return $this->hasMany(Tanque::class, 'FK_EMPRESA_ID_EMPRESA', 'ID_EMPRESA');
+    }
 }

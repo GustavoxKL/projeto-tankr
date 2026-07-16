@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\EstacaoAbastecimentoController;
+use App\Http\Controllers\FrentistaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\MotoristaController;
 use App\Http\Controllers\VeiculoController;
@@ -14,6 +15,7 @@ Route::apiResource('estacoes', EstacaoAbastecimentoController::class)->parameter
 Route::apiResource('motoristas', MotoristaController::class);
 Route::apiResource('usuarios', UsuarioController::class);
 Route::apiResource('veiculos', VeiculoController::class);
+Route::apiResource('frentistas', FrentistaController::class);
 
 
 // 
