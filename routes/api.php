@@ -8,6 +8,7 @@ use App\Http\Controllers\EstacaoAbastecimentoController;
 use App\Http\Controllers\FrentistaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\MotoristaController;
+use App\Http\Controllers\TanqueController;
 use App\Http\Controllers\VeiculoController;
 
 Route::apiResource('empresas', EmpresaController::class);
@@ -16,6 +17,7 @@ Route::apiResource('motoristas', MotoristaController::class);
 Route::apiResource('usuarios', UsuarioController::class);
 Route::apiResource('veiculos', VeiculoController::class);
 Route::apiResource('frentistas', FrentistaController::class);
+Route::apiResource('tanques', TanqueController::class);
 
 
 // 

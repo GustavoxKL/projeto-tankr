@@ -66,14 +66,11 @@
             <span>Estações</span>
         </a>
 
-        <a href="#" class="nav-item {{ request()->routeIs('admin.tanques.*') ? 'active' : '' }}">
+        <a href="{{ route('admin.tanques.index') }}" class="nav-item {{ request()->routeIs('admin.tanques.*') ? 'active' : '' }}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                <path d="M3 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18"/>
-                <path d="M3 22h12"/>
-                <path d="M18 7v10a2 2 0 0 0 4 0v-6a2 2 0 0 0-2-2h-2"/>
-                <path d="M15 6h2l3 3"/>
-                <path d="M7 6h4"/>
-                <path d="M7 10h4"/>
+                <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                <path d="M3 5v14a9 3 0 0 0 18 0V5"/>
+                <path d="M3 12a9 3 0 0 0 18 0"/>
             </svg>
             <span>Tanques</span>
         </a>
